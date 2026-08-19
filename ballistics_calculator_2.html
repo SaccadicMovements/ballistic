@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ballistics Calculator</title>
+
+<!-- Home Screen web app support (iOS Safari: Share -> Add to Home Screen) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ballistics">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1a17" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIkJhbGxpc3RpY3MgQ2FsY3VsYXRvciIsICJzaG9ydF9uYW1lIjogIkJhbGxpc3RpY3MiLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgInN0YXJ0X3VybCI6ICIuIiwgImJhY2tncm91bmRfY29sb3IiOiAiIzFiMWExNyIsICJ0aGVtZV9jb2xvciI6ICIjMWIxYTE3IiwgImljb25zIjogW3sic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBTFFBQUFDMENBWUFBQUE5elFZeUFBQUhDa2xFUVZSNG5PM2RUVzRVU1JDRzRlZ1JkMEN5SmE2QVlNRXQ1aExzT1EzN3VjVGNnZ1dJS3lEWmt1OWd5Yk1ZTlpUdCtzbXF5c3o0SXZKOWRsZ2p1enJ6N1hCMjJkTyttSWpibTdkUDN0ZUE0Kzd1SHk3ZTEyQm01bllSQkp5YlYrQmR2eWdSajZsbjNNMi9FQkZqcW5YY3pUNDVJV05OcTdDcmYxSkN4aDYxdy82cjVpY2padXhWdTVrcXp3NUNSZzAxcHZYcENVM01xS1ZHUzZlQ0ptYlVkcmFwUXlPZWtOSERrU1BJN2dsTnpPamxTR3U3bmdIRVhPN25qMit6SDMvLzRWUG5LNGx2ejZRdW50REVEQzk3MnF0Nkh4cndWaFEwMHhuZVNodmNESnFZb2FLa3hkV2dpUmxxdHBya0RJMVVGb05tT2tQVldwdXpRUk16MUMwMXlwRURxYndLbXVtTUtPWmFaVUlqbFdkQk01MFJ6Y3RtbWRCSWhhQ1J5dStnT1c0Z3FtbTdiend2Skp0M1g3NVAvdlZZOE4vODhldnJ4d1pYTkI2Q1BtQXB5aGFmazlEM2VXUEdjV05MaTRDUGZtMENuM2Q3OC9icDd2N2h3b1JlNEJueG11bDFFZmRyQkQyaEd2RVM0bjZOb0MxZXlIT3VqMkgwc0M4am41OXJoenlOYWUvLzlkM3lXa1l5Wk5BMTR0a0twc2JiR1BTNHpteUdDdnBNSUh2RGFQRytIRDJ2UDZwaGdqNFN3NWtJV3IvUlRPL0hFMFg2b1BkdWZLMU43L25PU1Y2UFVWSHFvUGRzZE8xTjluZ3JNTS9IcXlKbDBBb2I2L25lZGdxUDMwdTZvRXMzcy9WR0tyeFpvOHBhOUpUcTk2RkgzTUExcFk4end3K1dybEpNYU1XUUZTYjBsT0lhdFJCK1FxdHVsTnI3UUk4eXJVTlA2SkxGOTV3NGFsUDZTbjNkemdnN29UTnZTbXNsNnhKMVVvY01tcGpQeXhwMXVLQ0p1WjZNVVljNlEyOHRybHJJcW1mb09kSFdka200Q2Iwa3lvS3J5ckorWVlKZW15QlpOc1BiMmpwR09YcUVDRHJLWW1ZWFlSL2tnODV5dG90aWF6M1ZvNVlQZWcweHR4RjVYYVdENXR6c0orcDVXalpvWXZZWE1XclpvSUVqSklObU91dUlOcVhsZ2labVBaR2lsZ3NhT0VNcWFLYXpyaWhUV2lyb0pjU3NJY0kreUFTdDlDekhmaXI3SnhQMGtnaFRZU1RxK3lFUnRNcXpHK2NvN0tORTBFdlVwOEdvbFBmRlBXaUZaelhxOGQ1UDk2Q1hLRThCNk82UGJOREFFYTVCZTM5N1FodWUreW81b1ZXL25lRTV4WDJTREJvNHlpMW9qaHU1ZWUydjNJUlcvRGFHWldyN0pSYzBjQVpCSXhXWHYvVTl5dmxaOFQzc2VucjM1WHYzSTRuVWhGWTdqNkdNMHI1SkJRMmNSZEJJaGFDUkNrRWpsZTVCTDkzaFVIcGhnZjJXOXEvM0hTMG1ORkp4dVE4OWtybS9zekw2L2VtV21OQU5MZjNSb0tXUDQ3emRFL3I4Wmp6T2YvaHpuRTB1bWJCYjYvVHp4emNtZFFNY09Sb29mZEtYUkIxcm1yY1pWbnVlK0J3NWtBcEJJeFdDUmlvRWpWUjJ2eWc4KzhwOGhKOFV2di93cWVqRkhIYzU2dU11UnlOYlVaZkdIQ2w2aFdIRmthT2hwUmdqUlJvTkU3b3g0dTJMQ1kxVXVnZXQ4bXVHcUV2aC9HekdoRVl5QkkxVUNCcXBFRFJTa1FxYUY0WXhLZTJieTMzb1gxOC9TaTFDUzBzL0xSemgvclRIcnpOSVRXamdMSUpHS25KQmozSVV5VUp0djl5Q3p2VHJvbmpOYTMvbEpqUndobVRRYXQvR01FOXhuMXlENXRpUmsrZStTazVvNENqWm9CVy9uZUVQMWYxeEQ1cGpSeTdlKytrZTlCclZLVEE2NVgyUkNOcjdXWTA2RlBaUkl1ZzF5dE5nUk9yN0lSTzB3ck1ieDZuc24welFhOVNud2lnaTdJTlUwR3ZQOGdpTG1kbmErcXRNWnpPeG9JR3o1SUptU3V1Sk1wM05CSU0ySTJvbGtXSTJFdzBhT0VvMmFLYTB2MmpUMlV3NGFET2k5aFF4WmpQeG9MY1FkUnVSMTFVKzZLMXBFSG54RlcydHAvSjBOZ3NRdEpuK0lvNGl3ajZFQ05xTTgzUVBVYy9OVTJHQzNrTFU1MlJadjh2dHpkc243NHZZbzJUaGxhYUorbnZiUlZ2UExlRW1kTW5pWnBrMnJXV0wyU3hnMEdaRVhVUEdtTTJDQm0xRzFHZGtqZGtzNEJuNnBkSm92VFpJNlF5dHZsWTFoSjNRVjZXTFAvcTBIaUZtc3dRVGVrcHgwN3dudE9LYXRCUitRazh4clo4YkxXYXpaQlA2YWsrd3JUZlRZMElyUGY3ZVVnWjlwYkN4UFlOV2VMemVVZ2R0dHY5NFVYdWpld1R0L1JpVnBBLzY2c2k1dWNiR3R3cmE2L0dvR3lab3MzTXZCby9HVUROb2ordVBacWlncjJyYzVTZ041RXpRUGE4emk0dVoyWWhSbTlXL2ZUY1hUMm5RUGE0bHU3djdoOHZRUVYrMXZDLzk3K2ZIMlkvLy9VK2J2MG85WXNoWGQvY1BGNWUvOWEzbUdrSGtIN2lNSFBJVVFVOU1vNGdRTnhHLzlzYnMvMUU5K3JIakpkVzRpWGplM2YzRHhZd0pYZVJsUkQwREorQjlDUHFBcGNpNFQrenZNdjBIeDQ3NnZIOTlkQVRYNDRaWnNsOGZCUWdhcVR3TGVqcTZnUWhlTnN1RVJpcXZnbVpLSTRxNVZwblFTR1UyYUtZMDFDMDF1amloaVJxcTF0cmt5SUZVVm9ObVNrUE5WcE9iRTVxb29hS2t4YUlqQjFIRFcybURuS0dSU25IUVRHbDQyZFBlcmdsTjFPaHRiM09IQXVYM3B0SERrUUY2YXVJU05sbzRjeEk0OWFLUUl3aHFPOXZVNmJzY1JJMWFhclJVTlVhT0lEaWk1bENzZWgrYWFZMjlhamZUTEVDbU5kYTBHbjdOSnlwaFk2cjFkL0d1UndUaUhsUFBvNmpibVplNGMvTjZQU1h6SW83QVkxTzVJZkFmTnhvRm1jTW16OGNBQUFBQVNVVk9SSzVDWUlJPSIsICJzaXplcyI6ICIxODB4MTgwIiwgInR5cGUiOiAiaW1hZ2UvcG5nIn1dfQ==">
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --panel: #ffffff;
+    --border: #e2e0da;
+    --text-primary: #23221f;
+    --text-secondary: #6b6a64;
+    --text-muted: #96948c;
+    --input-bg: #ffffff;
+    --input-border: #cfccc3;
+    --accent: #2a78d6;
+    --accent-2: #eb6834;
+    --card-bg: #f0efe9;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --up-color: #2a78d6;
+    --wind-color: #d95926;
+  }
+  [data-theme="dark"] {
+    --bg: #1b1a17;
+    --panel: #242320;
+    --border: #38362f;
+    --text-primary: #ece9e1;
+    --text-secondary: #b3b0a6;
+    --text-muted: #7d7b72;
+    --input-bg: #2b2a26;
+    --input-border: #45433a;
+    --accent: #3987e5;
+    --accent-2: #d95926;
+    --card-bg: #2b2a26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --up-color: #3987e5;
+    --wind-color: #e5773f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1180px; margin: 0 auto;
+    padding: calc(20px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(60px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
+  }
+  header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+  h1 { font-size: 21px; margin: 0 0 4px; font-weight: 650; }
+  .subtitle { color: var(--text-secondary); font-size: 13px; margin: 0; max-width: 620px; line-height: 1.5; }
+  .theme-toggle {
+    border: 1px solid var(--input-border); background: var(--panel); color: var(--text-secondary);
+    border-radius: 7px; padding: 6px 11px; font-size: 12.5px; cursor: pointer; white-space: nowrap;
+  }
+  .theme-toggle:hover { color: var(--text-primary); }
+
+  .layout { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 11px;
+    padding: 16px 16px 18px; box-shadow: var(--shadow);
+  }
+  .panel + .panel { margin-top: 16px; }
+  .section-title {
+    font-size: 11.5px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--text-muted); margin: 0 0 10px;
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .field { margin-bottom: 10px; }
+  .field label {
+    display: block; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 4px;
+  }
+  .field input, .field select {
+    width: 100%; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--input-border);
+    background: var(--input-bg); color: var(--text-primary); font-size: 13.5px;
+    font-family: inherit;
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  .seg {
+    display: flex; border: 1px solid var(--input-border); border-radius: 6px; overflow: hidden;
+  }
+  .seg button {
+    flex: 1; padding: 7px 0; background: var(--input-bg); border: none; color: var(--text-secondary);
+    font-size: 13px; cursor: pointer; border-right: 1px solid var(--input-border);
+  }
+  .seg button:last-child { border-right: none; }
+  .seg button.active { background: var(--accent); color: #fff; }
+
+  .results-top { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media (max-width: 640px) { .results-top { grid-template-columns: 1fr; } }
+  .result-card {
+    background: var(--card-bg); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border);
+  }
+  .result-card .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 650; margin-bottom: 8px; }
+  .result-card .big { font-size: 26px; font-weight: 700; line-height: 1.15; }
+  .result-card .big .unit { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-left: 4px; }
+  .result-card .sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
+  .result-card.elev .big { color: var(--up-color); }
+  .result-card.wind .big { color: var(--wind-color); }
+
+  .stat-strip {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px;
+  }
+  @media (max-width: 640px) { .stat-strip { grid-template-columns: repeat(2,1fr); } }
+  .stat-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; }
+  .stat-box .k { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .stat-box .v { font-size: 15px; font-weight: 650; margin-top: 2px; }
+
+  svg { display: block; }
+  .chart-wrap { margin-bottom: 18px; }
+  .axis-label { font-size: 10px; fill: var(--text-muted); }
+  .grid-line { stroke: var(--border); stroke-width: 1; }
+  .drop-line { fill: none; stroke: var(--up-color); stroke-width: 2; }
+  .zero-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3,3; }
+  .marker { fill: var(--up-color); }
+  .marker-target { fill: var(--accent-2); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--text-muted); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+  tr.zero-row td { color: var(--accent); font-weight: 650; }
+  tr.target-row td { color: var(--accent-2); font-weight: 650; }
+  .table-scroll { overflow-x: auto; }
+
+  .error-box {
+    background: #fbe6e2; border: 1px solid #e8998a; color: #8a2f1e; border-radius: 8px;
+    padding: 10px 12px; font-size: 13px; margin-bottom: 14px;
+  }
+  [data-theme="dark"] .error-box { background: #3a201b; border-color: #6b3225; color: #f0ada0; }
+
+  .note { font-size: 11.5px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; }
+  .footer-note { font-size: 11.5px; color: var(--text-muted); margin-top: 18px; line-height: 1.6; }
+
+  .preset-list { display: flex; flex-direction: column; gap: 8px; }
+  .preset-btn {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 11px; color: var(--text-primary); font-family: inherit;
+  }
+  .preset-btn:hover { border-color: var(--accent); }
+  .preset-btn.active { border-color: var(--accent); background: var(--panel); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .preset-btn .pname { font-size: 13px; font-weight: 650; }
+  .preset-btn .pmeta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Ballistics Calculator</h1>
+      <p class="subtitle">Point-mass trajectory calculator using standard G1/G7 drag functions. Enter your load and conditions to get elevation and windage corrections in MOA and Mil.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Dark mode</button>
+  </header>
+
+  <div class="layout">
+    <div class="col-inputs">
+
+      <div class="panel">
+        <div class="section-title">Your Loads</div>
+        <div class="preset-list" id="presetList"></div>
+        <div class="note">Click a preset to load its weight &amp; BC. Everything else (velocity, zero, conditions) stays as you've set it.</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">Projectile &amp; Load</div>
+        <div class="field">
+          <label for="weight">Bullet weight (grains)</label>
+          <input type="number" id="weight" value="175" step="0.1" min="1">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="bc">Ballistic coefficient</label>
+            <input type="number" id="bc" value="0.505" step="0.001" min="0.01">
+          </div>
+          <div class="field">
+            <label>Drag model</label>
+            <div class="seg" id="dragSeg">
+              <button data-val="G1" class="active">G1</button>
+              <button data-val="G7">G7</button>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="mv">Muzzle velocity (fps)</label>
+          <input type="number" id="mv" value="2673" step="1" min="100">
+        </div>
+        <div class="note">Use the BC published by the bullet manufacturer for the matching drag model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">Sight &amp; Zero</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="sightHeight">Sight height (in)</label>
+            <input type="number" id="sightHeight" value="1.5" step="0.05" min="0">
+          </div>
+          <div class="field">
+            <label for="zeroRange">Zero range (yd)</label>
+            <input type="number" id="zeroRange" value="100" step="1" min="1">
+          </div>
+        </div>
+        <div class="field">
+          <label for="targetRange">Target distance (yd)</label>
+          <input type="number" id="targetRange" value="500" step="1" min="1">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">Atmosphere</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="temp">Temperature (&deg;F)</label>
+            <input type="number" id="temp" value="59" step="1">
+          </div>
+          <div class="field">
+            <label for="humidity">Humidity (%)</label>
+            <input type="number" id="humidity" value="0" step="1" min="0" max="100">
+          </div>
+        </div>
+        <div class="field">
+          <label for="altitude">Altitude (ft)</label>
+          <input type="number" id="altitude" value="662" step="10">
+          <div class="hint">Defaulted to ~662 ft, Consolidated Sportsmen of Lycoming County (Williamsport, PA). Adjust if you're shooting elsewhere.</div>
+        </div>
+        <div class="field">
+          <label for="pressure">Station pressure (inHg) &mdash; optional</label>
+          <input type="number" id="pressure" value="" step="0.01" placeholder="leave blank to estimate from altitude">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">Wind &amp; Shot Angle</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="windSpeed">Wind speed (mph)</label>
+            <input type="number" id="windSpeed" value="0" step="0.5" min="0">
+          </div>
+          <div class="field">
+            <label for="windClock">Wind direction (clock)</label>
+            <input type="number" id="windClock" value="9" step="0.5" min="1" max="12">
+          </div>
+        </div>
+        <div class="hint" style="margin: -4px 0 10px;">12 = headwind, 3 = from your right, 6 = tailwind, 9 = from your left.</div>
+        <div class="field">
+          <label for="shotAngle">Shot angle / incline (&deg;, uphill +)</label>
+          <input type="number" id="shotAngle" value="0" step="1" min="-89" max="89">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-results">
+      <div id="errorBox"></div>
+
+      <div class="panel">
+        <div class="results-top">
+          <div class="result-card elev">
+            <div class="label">Elevation correction</div>
+            <div class="big" id="elevBig">&ndash;</div>
+            <div class="sub" id="elevSub"></div>
+          </div>
+          <div class="result-card wind">
+            <div class="label">Windage correction</div>
+            <div class="big" id="windBig">&ndash;</div>
+            <div class="sub" id="windSub"></div>
+          </div>
+        </div>
+
+        <div class="stat-strip">
+          <div class="stat-box"><div class="k">Velocity at target</div><div class="v" id="statVel">&ndash;</div></div>
+          <div class="stat-box"><div class="k">Energy at target</div><div class="v" id="statEnergy">&ndash;</div></div>
+          <div class="stat-box"><div class="k">Time of flight</div><div class="v" id="statTof">&ndash;</div></div>
+          <div class="stat-box"><div class="k">Mach at target</div><div class="v" id="statMach">&ndash;</div></div>
+        </div>
+
+        <div class="chart-wrap">
+          <svg id="dropChart" width="100%" height="220" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+
+        <div class="table-scroll">
+          <table id="trajTable">
+            <thead>
+              <tr>
+                <th>Range (yd)</th>
+                <th>Drop (in)</th>
+                <th>MOA</th>
+                <th>Mil</th>
+                <th>Wind (in)</th>
+                <th>Wind MOA</th>
+                <th>Wind Mil</th>
+                <th>Velocity (fps)</th>
+                <th>Energy (ft&middot;lb)</th>
+                <th>Time (s)</th>
+              </tr>
+            </thead>
+            <tbody id="trajBody"></tbody>
+          </table>
+        </div>
+
+        <div class="footer-note">
+          Point-mass model (standard G1/G7 drag tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Ballistics engine (validated point-mass model) =====
+const G1 = [
+[0.00,0.2629],[0.05,0.2558],[0.10,0.2487],[0.15,0.2413],[0.20,0.2344],[0.25,0.2278],
+[0.30,0.2214],[0.35,0.2155],[0.40,0.2104],[0.45,0.2061],[0.50,0.2032],[0.55,0.2020],
+[0.60,0.2034],[0.70,0.2165],[0.725,0.2230],[0.75,0.2313],[0.775,0.2417],[0.80,0.2546],
+[0.825,0.2706],[0.85,0.2901],[0.875,0.3136],[0.90,0.3415],[0.925,0.3734],[0.95,0.4084],
+[0.975,0.4448],[1.0,0.4805],[1.025,0.5136],[1.05,0.5427],[1.075,0.5677],[1.10,0.5883],
+[1.125,0.6053],[1.15,0.6191],[1.20,0.6393],[1.25,0.6518],[1.30,0.6589],[1.35,0.6621],
+[1.40,0.6625],[1.45,0.6607],[1.50,0.6573],[1.55,0.6528],[1.60,0.6474],[1.65,0.6413],
+[1.70,0.6347],[1.75,0.6280],[1.80,0.6210],[1.85,0.6141],[1.90,0.6072],[1.95,0.6003],
+[2.00,0.5934],[2.05,0.5867],[2.10,0.5804],[2.15,0.5743],[2.20,0.5685],[2.25,0.5630],
+[2.30,0.5577],[2.35,0.5527],[2.40,0.5481],[2.45,0.5438],[2.50,0.5397],[2.60,0.5325],
+[2.70,0.5264],[2.80,0.5211],[2.90,0.5168],[3.00,0.5133],[3.20,0.5084],[3.40,0.5054],
+[3.60,0.5030],[3.80,0.5016],[4.00,0.5006],[4.50,0.4995],[5.00,0.4988]
+];
+const G7 = [
+[0.00,0.1198],[0.05,0.1197],[0.10,0.1196],[0.15,0.1194],[0.20,0.1193],[0.25,0.1194],
+[0.30,0.1194],[0.35,0.1194],[0.40,0.1193],[0.45,0.1193],[0.50,0.1194],[0.55,0.1193],
+[0.60,0.1194],[0.65,0.1197],[0.70,0.1202],[0.725,0.1207],[0.75,0.1215],[0.775,0.1226],
+[0.80,0.1242],[0.825,0.1266],[0.85,0.1306],[0.875,0.1368],[0.90,0.1464],[0.925,0.1660],
+[0.95,0.2054],[0.975,0.2993],[1.0,0.3803],[1.025,0.4015],[1.05,0.4043],[1.075,0.4034],
+[1.10,0.4014],[1.125,0.3987],[1.15,0.3955],[1.20,0.3884],[1.25,0.3810],[1.30,0.3732],
+[1.35,0.3657],[1.40,0.3580],[1.50,0.3440],[1.60,0.3300],[1.70,0.3170],[1.80,0.3055],
+[1.90,0.2949],[2.00,0.2855],[2.20,0.2685],[2.40,0.2540],[2.60,0.2415],[2.80,0.2305],
+[3.00,0.2210],[3.20,0.2130],[3.40,0.2060],[3.60,0.2000],[3.80,0.1950],[4.00,0.1905],
+[4.50,0.1810],[5.00,0.1740]
+];
+const DENSITY_SL = 0.0023769;
+const K_SHAPE = 0.5 * (Math.PI / 4032000.0) * (7000.0 * 32.174);
+const K_CONST = K_SHAPE * DENSITY_SL;
+
+function interpCd(mach, table) {
+  if (mach <= table[0][0]) return table[0][1];
+  if (mach >= table[table.length - 1][0]) return table[table.length - 1][1];
+  for (let i = 0; i < table.length - 1; i++) {
+    const m0 = table[i][0], c0 = table[i][1], m1 = table[i+1][0], c1 = table[i+1][1];
+    if (mach >= m0 && mach <= m1) { const t = (mach - m0) / (m1 - m0); return c0 + t * (c1 - c0); }
+  }
+  return table[table.length - 1][1];
+}
+function speedOfSound(tempF) { return 49.0223 * Math.sqrt(tempF + 459.67); }
+function densityRatio(altitudeFt, tempF, pressureInHg, humidityPct) {
+  let p = pressureInHg;
+  if (p === null || p === undefined || isNaN(p)) p = 29.92 * Math.pow(1 - 6.8753e-6 * altitudeFt, 5.2559);
+  const Tr = tempF + 459.67, Tstd = 518.67, Pstd = 29.92;
+  const Tc = (tempF - 32) * 5 / 9;
+  const esHpa = 6.1078 * Math.pow(10, 7.5 * Tc / (Tc + 237.3));
+  const esInHg = esHpa * 0.02953;
+  const pv = (humidityPct / 100.0) * esInHg;
+  const pEff = p - 0.3783 * pv;
+  return (pEff / Pstd) * (Tstd / Tr);
+}
+function dragDecel(vFps, mach, bc, dragModel, rhoRatio) {
+  const table = dragModel === 'G1' ? G1 : G7;
+  return K_CONST * rhoRatio * interpCd(mach, table) * vFps * vFps / bc;
+}
+function simulate(mv, bc, dragModel, angleRad, tempF, altitudeFt, pressureInHg, humidityPct, windMph, windDeg, maxRangeFt, dt) {
+  dt = dt || 0.0005;
+  const rhoRatio = densityRatio(altitudeFt, tempF, pressureInHg, humidityPct);
+  const aSound = speedOfSound(tempF);
+  const windFps = windMph * 1.46667;
+  const windx = -windFps * Math.cos(windDeg * Math.PI / 180);
+  const windz = windFps * Math.sin(windDeg * Math.PI / 180);
+  let vx = mv * Math.cos(angleRad), vy = mv * Math.sin(angleRad), vz = 0.0;
+  let x = 0, y = 0, z = 0, t = 0;
+  const g = 32.174, traj = [];
+  let guard = 0;
+  while (x < maxRangeFt && t < 10 && guard < 400000) {
+    guard++;
+    const relVx = vx - windx, relVz = vz - windz;
+    const speed = Math.sqrt(relVx*relVx + vy*vy + relVz*relVz);
+    const mach = speed / aSound;
+    const dec = dragDecel(speed, mach, bc, dragModel, rhoRatio);
+    const ax = -dec * (relVx / speed), ay = -dec * (vy / speed) - g, az = -dec * (relVz / speed);
+    vx += ax*dt; vy += ay*dt; vz += az*dt;
+    x += vx*dt; y += vy*dt; z += vz*dt; t += dt;
+    traj.push({x,y,z,vx,vy,vz,t,speed});
+  }
+  return traj;
+}
+function lerpPt(p0, p1, frac) { const o = {}; for (const k in p0) o[k] = p0[k] + frac*(p1[k]-p0[k]); return o; }
+function perpDropAtLosRange(traj, sFt, sightHeightFt, shotAngleDeg) {
+  const theta = shotAngleDeg * Math.PI / 180, ct = Math.cos(theta), st = Math.sin(theta);
+  let prev = null, prevS = null;
+  for (const pt of traj) {
+    const s = pt.x*ct + (pt.y - sightHeightFt)*st;
+    if (prevS !== null && s >= sFt) {
+      const frac = s !== prevS ? (sFt - prevS)/(s - prevS) : 0;
+      const ip = lerpPt(prev, pt, frac);
+      const perp = -ip.x*st + (ip.y - sightHeightFt)*ct;
+      return {perp, pt: ip};
+    }
+    prev = pt; prevS = s;
+  }
+  if (traj.length) { const last = traj[traj.length-1]; return {perp: -last.x*st + (last.y-sightHeightFt)*ct, pt: last}; }
+  return {perp: 0, pt: {x:0,y:0,z:0,vx:0,vy:0,vz:0,t:0,speed:0}};
+}
+function solveZeroAngle(mv, bc, dragModel, zeroLosFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
+  shotAngleDeg = shotAngleDeg || 0;
+  const theta = shotAngleDeg * Math.PI / 180;
+  const maxX = zeroLosFt + 5;
+  let lo = -0.03, hi = 0.03;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo+hi)/2;
+    const traj = simulate(mv, bc, dragModel, mid+theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxX);
+    const {perp} = perpDropAtLosRange(traj, zeroLosFt, sightHeightFt, shotAngleDeg);
+    if (perp < 0) lo = mid; else hi = mid;
+  }
+  return (lo+hi)/2;
+}
+function moaFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (1.047 * rangeYd/100) : 0; }
+function milFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (3.6 * rangeYd/100) : 0; }
+
+// ===== UI wiring =====
+const $ = (id) => document.getElementById(id);
+let dragModel = 'G1';
+
+document.getElementById('dragSeg').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  dragModel = btn.dataset.val;
+  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b === btn));
+  recalc();
+});
+
+// ===== Load presets =====
+const PRESETS = [
+  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bc: 0.505, drag: 'G1', meta: 'BC .505 G1' },
+  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bc: 0.323, drag: 'G1', meta: 'BC .323 G1 (2700+ fps band)' },
+];
+const presetListEl = $('presetList');
+PRESETS.forEach((p, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'preset-btn';
+  btn.dataset.idx = i;
+  btn.innerHTML = '<div class="pname">' + p.name + '</div><div class="pmeta">' + p.meta + '</div>';
+  btn.addEventListener('click', () => {
+    $('weight').value = p.weight;
+    $('bc').value = p.bc;
+    dragModel = p.drag;
+    [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
+    [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
+    recalc();
+  });
+  presetListEl.appendChild(btn);
+});
+// manually editing weight/BC means the preset no longer necessarily applies — drop the highlight
+['weight','bc'].forEach(id => $(id).addEventListener('input', () => {
+  [...presetListEl.children].forEach(b => b.classList.remove('active'));
+}));
+
+const themeToggle = $('themeToggle');
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  themeToggle.textContent = t === 'dark' ? 'Light mode' : 'Dark mode';
+}
+applyTheme(window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches ? 'dark' : 'light');
+themeToggle.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+  drawChart(lastTrajResult);
+});
+
+const inputIds = ['weight','bc','mv','sightHeight','zeroRange','targetRange','temp','humidity','altitude','pressure','windSpeed','windClock','shotAngle'];
+inputIds.forEach(id => $(id).addEventListener('input', debounce(recalc, 180)));
+function debounce(fn, ms) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
+
+function fmt(n, d) { return isFinite(n) ? n.toFixed(d) : '–'; }
+
+let lastTrajResult = null;
+
+function recalc() {
+  const errBox = $('errorBox');
+  errBox.innerHTML = '';
+
+  const weight = parseFloat($('weight').value);
+  const bc = parseFloat($('bc').value);
+  const mv = parseFloat($('mv').value);
+  const sightHeightIn = parseFloat($('sightHeight').value);
+  const zeroYd = parseFloat($('zeroRange').value);
+  const targetYd = parseFloat($('targetRange').value);
+  const tempF = parseFloat($('temp').value);
+  const humidity = parseFloat($('humidity').value) || 0;
+  const altitude = parseFloat($('altitude').value) || 0;
+  const pressureRaw = $('pressure').value;
+  const pressure = pressureRaw === '' ? null : parseFloat(pressureRaw);
+  const windMph = parseFloat($('windSpeed').value) || 0;
+  const windClock = parseFloat($('windClock').value);
+  const shotAngle = parseFloat($('shotAngle').value) || 0;
+
+  const problems = [];
+  if (!(weight > 0)) problems.push('Bullet weight must be a positive number.');
+  if (!(bc > 0)) problems.push('Ballistic coefficient must be a positive number.');
+  if (!(mv > 0)) problems.push('Muzzle velocity must be a positive number.');
+  if (!(sightHeightIn >= 0)) problems.push('Sight height must be zero or positive.');
+  if (!(zeroYd > 0)) problems.push('Zero range must be a positive number.');
+  if (!(targetYd > 0)) problems.push('Target distance must be a positive number.');
+  if (!(tempF > -90 && tempF < 140)) problems.push('Temperature looks out of range.');
+  if (!(shotAngle > -90 && shotAngle < 90)) problems.push('Shot angle must be between -89 and 89 degrees.');
+
+  if (problems.length) {
+    errBox.innerHTML = '<div class="error-box">' + problems.join('<br>') + '</div>';
+    return;
+  }
+
+  const sightHeightFt = sightHeightIn / 12.0;
+  const zeroFt = zeroYd * 3.0;
+  const targetFt = targetYd * 3.0;
+  const windDeg = (windClock % 12) * 30;
+
+  const depAngle = solveZeroAngle(mv, bc, dragModel, zeroFt, sightHeightFt, tempF, altitude, pressure, humidity, shotAngle);
+  const theta = shotAngle * Math.PI / 180;
+  const maxSimFt = Math.max(targetFt, zeroFt) + 60;
+  const traj = simulate(mv, bc, dragModel, depAngle + theta, tempF, altitude, pressure, humidity, windMph, windDeg, maxSimFt);
+
+  const {perp, pt} = perpDropAtLosRange(traj, targetFt, sightHeightFt, shotAngle);
+  const dropIn = perp * 12.0;
+  const windageIn = pt.z * 12.0;
+  const moa = moaFromInches(dropIn, targetYd);
+  const mil = milFromInches(dropIn, targetYd);
+  const windMoa = Math.abs(windageIn) / (1.047 * targetYd/100);
+  const windMil = Math.abs(windageIn) / (3.6 * targetYd/100);
+
+  $('elevBig').innerHTML = fmt(Math.abs(moa),2) + '<span class="unit">MOA</span> &nbsp; ' + fmt(Math.abs(mil),2) + '<span class="unit">Mil</span>';
+  $('elevSub').textContent = (moa >= 0 ? 'Dial UP ' : 'Dial DOWN ') + fmt(Math.abs(moa),2) + ' MOA (' + fmt(Math.abs(mil),2) + ' Mil) from your ' + zeroYd + ' yd zero.';
+
+  if (windMph > 0) {
+    const dir = windageIn > 0 ? 'LEFT drift → dial RIGHT' : (windageIn < 0 ? 'RIGHT drift → dial LEFT' : 'no drift');
+    $('windBig').innerHTML = fmt(windMoa,2) + '<span class="unit">MOA</span> &nbsp; ' + fmt(windMil,2) + '<span class="unit">Mil</span>';
+    $('windSub').textContent = fmt(Math.abs(windageIn),1) + ' in drift — ' + dir + ' ' + fmt(windMoa,2) + ' MOA (' + fmt(windMil,2) + ' Mil).';
+  } else {
+    $('windBig').innerHTML = '0.00<span class="unit">MOA</span> &nbsp; 0.00<span class="unit">Mil</span>';
+    $('windSub').textContent = 'No wind entered.';
+  }
+
+  const energyFtLb = weight * pt.speed * pt.speed / 450240;
+  const aSoundAtTemp = speedOfSound(tempF);
+  $('statVel').textContent = fmt(pt.speed,0) + ' fps';
+  $('statEnergy').textContent = fmt(energyFtLb,0) + ' ft·lb';
+  $('statTof').textContent = fmt(pt.t,3) + ' s';
+  $('statMach').textContent = fmt(pt.speed/aSoundAtTemp,2);
+
+  // trajectory table
+  const rows = [];
+  const stepYd = targetYd > 800 ? 100 : (targetYd > 300 ? 50 : 25);
+  const stops = new Set();
+  for (let r = stepYd; r <= Math.max(targetYd, zeroYd); r += stepYd) stops.add(Math.round(r));
+  stops.add(Math.round(zeroYd));
+  stops.add(Math.round(targetYd));
+  const sortedStops = [...stops].filter(r => r > 0).sort((a,b) => a-b);
+
+  const tbody = $('trajBody');
+  tbody.innerHTML = '';
+  const chartPts = [];
+  sortedStops.forEach(ryd => {
+    const rft = ryd * 3.0;
+    const {perp: p2, pt: pt2} = perpDropAtLosRange(traj, rft, sightHeightFt, shotAngle);
+    const dIn = p2 * 12.0;
+    const wIn = pt2.z * 12.0;
+    const rowMoa = moaFromInches(dIn, ryd);
+    const rowMil = milFromInches(dIn, ryd);
+    const rowWMoa = Math.abs(wIn) / (1.047 * ryd/100);
+    const rowWMil = Math.abs(wIn) / (3.6 * ryd/100);
+    const en = weight * pt2.speed * pt2.speed / 450240;
+    chartPts.push({ryd, dIn});
+    const tr = document.createElement('tr');
+    if (Math.round(zeroYd) === ryd) tr.classList.add('zero-row');
+    if (Math.round(targetYd) === ryd) tr.classList.add('target-row');
+    tr.innerHTML = '<td>' + ryd + '</td><td>' + fmt(dIn,1) + '</td><td>' + fmt(rowMoa,2) + '</td><td>' + fmt(rowMil,2) +
+      '</td><td>' + fmt(wIn,1) + '</td><td>' + fmt(rowWMoa,2) + '</td><td>' + fmt(rowWMil,2) +
+      '</td><td>' + fmt(pt2.speed,0) + '</td><td>' + fmt(en,0) + '</td><td>' + fmt(pt2.t,3) + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  lastTrajResult = {chartPts, zeroYd, targetYd};
+  drawChart(lastTrajResult);
+}
+
+function drawChart(result) {
+  const svg = $('dropChart');
+  svg.innerHTML = '';
+  if (!result || !result.chartPts.length) return;
+  const {chartPts, zeroYd, targetYd} = result;
+  const W = 900, H = 220, M = {left: 46, right: 20, top: 14, bottom: 26};
+  const plotW = W - M.left - M.right, plotH = H - M.top - M.bottom;
+  const xMax = Math.max(...chartPts.map(p => p.ryd));
+  const yMin = Math.min(0, ...chartPts.map(p => p.dIn));
+  const yMax = Math.max(0, ...chartPts.map(p => p.dIn)) + 1e-6;
+  const yPad = (yMax - yMin) * 0.1 || 1;
+  const yLo = yMin - yPad, yHi = yMax + yPad;
+
+  const xScale = (x) => M.left + (x / xMax) * plotW;
+  const yScale = (y) => M.top + (1 - (y - yLo) / (yHi - yLo)) * plotH;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // zero line (y=0)
+  svg.appendChild(el('line', {x1: M.left, x2: W-M.right, y1: yScale(0), y2: yScale(0), class: 'zero-line'}));
+  svg.appendChild(el('text', {x: M.left+2, y: yScale(0)-4, class: 'axis-label'})).textContent = 'LOS';
+
+  // y-axis ticks
+  const yTicks = 4;
+  for (let i = 0; i <= yTicks; i++) {
+    const val = yLo + (i/yTicks)*(yHi-yLo);
+    const yy = yScale(val);
+    svg.appendChild(el('line', {x1: M.left, x2: W-M.right, y1: yy, y2: yy, class: 'grid-line', opacity: i===0||i===yTicks?0:0.5}));
+    const t = el('text', {x: M.left-6, y: yy+3, class: 'axis-label', 'text-anchor': 'end'});
+    t.textContent = val.toFixed(0);
+    svg.appendChild(t);
+  }
+  // x-axis ticks
+  const xTicks = 5;
+  for (let i = 0; i <= xTicks; i++) {
+    const val = (i/xTicks)*xMax;
+    const xx = xScale(val);
+    const t = el('text', {x: xx, y: H-6, class: 'axis-label', 'text-anchor': 'middle'});
+    t.textContent = Math.round(val) + 'yd';
+    svg.appendChild(t);
+  }
+
+  // drop path
+  const path = chartPts.map((p,i) => (i===0?'M':'L') + xScale(p.ryd).toFixed(1) + ',' + yScale(p.dIn).toFixed(1)).join(' ');
+  svg.appendChild(el('path', {d: path, class: 'drop-line'}));
+
+  // markers
+  const zeroPt = chartPts.reduce((a,b) => Math.abs(b.ryd-zeroYd) < Math.abs(a.ryd-zeroYd) ? b : a);
+  const targetPt = chartPts.reduce((a,b) => Math.abs(b.ryd-targetYd) < Math.abs(a.ryd-targetYd) ? b : a);
+  svg.appendChild(el('circle', {cx: xScale(zeroPt.ryd), cy: yScale(zeroPt.dIn), r: 4, class: 'marker'}));
+  svg.appendChild(el('circle', {cx: xScale(targetPt.ryd), cy: yScale(targetPt.dIn), r: 4, class: 'marker-target'}));
+}
+
+recalc();
+</script>
+</body>
+</html>
