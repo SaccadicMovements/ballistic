@@ -71,6 +71,11 @@
 
   .layout { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
   @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } }
+  /* Grid items default to a content-based min-width, which lets a wide child
+     (the trajectory table, the chart) force the whole grid track -- and the
+     page -- wider than the viewport on mobile. min-width:0 lets them shrink
+     and rely on their own internal scrolling instead. */
+  .col-inputs, .col-results { min-width: 0; }
 
   .panel {
     background: var(--panel); border: 1px solid var(--border); border-radius: 11px;
@@ -123,8 +128,9 @@
   .stat-box .k { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
   .stat-box .v { font-size: 15px; font-weight: 650; margin-top: 2px; }
 
-  svg { display: block; }
+  svg { display: block; width: 100%; height: auto; }
   .chart-wrap { margin-bottom: 18px; }
+  #dropChart { aspect-ratio: 900 / 220; }
   .axis-label { font-size: 10px; fill: var(--text-muted); }
   .grid-line { stroke: var(--border); stroke-width: 1; }
   .drop-line { fill: none; stroke: var(--up-color); stroke-width: 2; }
@@ -138,7 +144,9 @@
   th { color: var(--text-muted); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; }
   tr.zero-row td { color: var(--accent); font-weight: 650; }
   tr.target-row td { color: var(--accent-2); font-weight: 650; }
-  .table-scroll { overflow-x: auto; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
+  .table-scroll-hint { display: none; font-size: 11px; color: var(--text-muted); margin: -4px 0 8px; }
+  @media (max-width: 640px) { .table-scroll-hint { display: block; } }
 
   .error-box {
     background: #fbe6e2; border: 1px solid #e8998a; color: #8a2f1e; border-radius: 8px;
@@ -184,12 +192,12 @@
         <div class="section-title">Projectile &amp; Load</div>
         <div class="field">
           <label for="weight">Bullet weight (grains)</label>
-          <input type="number" id="weight" value="175" step="0.1" min="1">
+          <input type="number" inputmode="decimal" id="weight" value="175" step="0.1" min="1">
         </div>
         <div class="field-row">
           <div class="field">
             <label for="bc">Ballistic coefficient</label>
-            <input type="number" id="bc" value="0.505" step="0.001" min="0.01">
+            <input type="number" inputmode="decimal" id="bc" value="0.505" step="0.001" min="0.01">
           </div>
           <div class="field">
             <label>Drag model</label>
@@ -201,7 +209,7 @@
         </div>
         <div class="field">
           <label for="mv">Muzzle velocity (fps)</label>
-          <input type="number" id="mv" value="2673" step="1" min="100">
+          <input type="number" inputmode="decimal" id="mv" value="2673" step="1" min="100">
         </div>
         <div class="note">Use the BC published by the bullet manufacturer for the matching drag model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
       </div>
@@ -211,16 +219,16 @@
         <div class="field-row">
           <div class="field">
             <label for="sightHeight">Sight height (in)</label>
-            <input type="number" id="sightHeight" value="1.5" step="0.05" min="0">
+            <input type="number" inputmode="decimal" id="sightHeight" value="1.5" step="0.05" min="0">
           </div>
           <div class="field">
             <label for="zeroRange">Zero range (yd)</label>
-            <input type="number" id="zeroRange" value="100" step="1" min="1">
+            <input type="number" inputmode="decimal" id="zeroRange" value="100" step="1" min="1">
           </div>
         </div>
         <div class="field">
           <label for="targetRange">Target distance (yd)</label>
-          <input type="number" id="targetRange" value="500" step="1" min="1">
+          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1">
         </div>
       </div>
 
@@ -229,21 +237,21 @@
         <div class="field-row">
           <div class="field">
             <label for="temp">Temperature (&deg;F)</label>
-            <input type="number" id="temp" value="59" step="1">
+            <input type="number" inputmode="decimal" id="temp" value="59" step="1">
           </div>
           <div class="field">
             <label for="humidity">Humidity (%)</label>
-            <input type="number" id="humidity" value="0" step="1" min="0" max="100">
+            <input type="number" inputmode="decimal" id="humidity" value="0" step="1" min="0" max="100">
           </div>
         </div>
         <div class="field">
           <label for="altitude">Altitude (ft)</label>
-          <input type="number" id="altitude" value="662" step="10">
+          <input type="number" inputmode="decimal" id="altitude" value="662" step="10">
           <div class="hint">Defaulted to ~662 ft, Consolidated Sportsmen of Lycoming County (Williamsport, PA). Adjust if you're shooting elsewhere.</div>
         </div>
         <div class="field">
           <label for="pressure">Station pressure (inHg) &mdash; optional</label>
-          <input type="number" id="pressure" value="" step="0.01" placeholder="leave blank to estimate from altitude">
+          <input type="number" inputmode="decimal" id="pressure" value="" step="0.01" placeholder="leave blank to estimate from altitude">
         </div>
       </div>
 
@@ -252,17 +260,17 @@
         <div class="field-row">
           <div class="field">
             <label for="windSpeed">Wind speed (mph)</label>
-            <input type="number" id="windSpeed" value="0" step="0.5" min="0">
+            <input type="number" inputmode="decimal" id="windSpeed" value="0" step="0.5" min="0">
           </div>
           <div class="field">
             <label for="windClock">Wind direction (clock)</label>
-            <input type="number" id="windClock" value="9" step="0.5" min="1" max="12">
+            <input type="number" inputmode="decimal" id="windClock" value="9" step="0.5" min="1" max="12">
           </div>
         </div>
         <div class="hint" style="margin: -4px 0 10px;">12 = headwind, 3 = from your right, 6 = tailwind, 9 = from your left.</div>
         <div class="field">
           <label for="shotAngle">Shot angle / incline (&deg;, uphill +)</label>
-          <input type="number" id="shotAngle" value="0" step="1" min="-89" max="89">
+          <input type="number" inputmode="decimal" id="shotAngle" value="0" step="1" min="-89" max="89">
         </div>
       </div>
 
@@ -296,6 +304,7 @@
           <svg id="dropChart" width="100%" height="220" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
 
+        <div class="table-scroll-hint">Swipe the table sideways to see wind, velocity, energy &amp; time columns &rarr;</div>
         <div class="table-scroll">
           <table id="trajTable">
             <thead>
@@ -454,6 +463,8 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 const PRESETS = [
   { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bc: 0.505, drag: 'G1', meta: 'BC .505 G1' },
   { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bc: 0.323, drag: 'G1', meta: 'BC .323 G1 (2700+ fps band)' },
+  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bc: 0.315, drag: 'G1', meta: 'BC .315 G1 (retailer-sourced, not on hornady.com — verify before trusting at distance)' },
+  { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bc: 0.120, drag: 'G1', mv: 1070, meta: 'BC .120 G1 · CCI-published MV 1070 fps (sets velocity too — fixed factory ammo)' },
 ];
 const presetListEl = $('presetList');
 PRESETS.forEach((p, i) => {
@@ -464,6 +475,7 @@ PRESETS.forEach((p, i) => {
   btn.addEventListener('click', () => {
     $('weight').value = p.weight;
     $('bc').value = p.bc;
+    if (p.mv !== undefined) $('mv').value = p.mv;
     dragModel = p.drag;
     [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
     [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
