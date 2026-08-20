@@ -474,39 +474,56 @@ let Model = 'G1';
 document.getElementById('dragSeg').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
-  Model = btn.dataset.val;
+  dragModel = btn.dataset.val;
   [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b === btn));
+  if (activePreset) {
+    const bc = bcForModel(activePreset, dragModel);
+    if (bc !== null && bc !== undefined) {
+      $('bc').value = bc;
+      $('bc').placeholder = '';
+    } else {
+      $('bc').value = '';
+      $('bc').placeholder = 'no verified ' + dragModel + ' BC for this bullet — enter your own';
+    }
+  }
   recalc();
 });
 
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bc: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1, .243 G7' },
-  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bc: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1, .151 G7' },
-  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bc: 0.315, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .315 G1' },
-  { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bc: 0.120, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1' },
+  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1, .243 G7' },
+  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1, .151 G7' },
+  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bcG1: 0.315, bcG7: 0.165, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .315 G1 (no verified G7)' },
+  { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1 (no verified G7)' },
 ];
+function bcForModel(preset, model) {
+  return model === 'G1' ? preset.bcG1 : preset.bcG7;
+}
+let activePreset = null;
 const presetListEl = $('presetList');
 PRESETS.forEach((p, i) => {
   const btn = document.createElement('button');
   btn.className = 'preset-btn';
   btn.dataset.idx = i;
   btn.innerHTML = '<div class="pname">' + p.name + '</div><div class="pmeta">' + p.meta + '</div>';
-  btn.addEventListener('click', () => {
-    $('weight').value = p.weight;
-    $('bc').value = p.bc;
-    if (p.mv !== undefined) $('mv').value = p.mv;
-    if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
-    if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
-    dragModel = p.drag;
-    [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
-    [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
-    recalc();
-  });
+ btn.addEventListener('click', () => {
+  activePreset = p;
+  $('weight').value = p.weight;
+  dragModel = p.drag;
+  const bc = bcForModel(p, dragModel);
+  $('bc').value = (bc !== null && bc !== undefined) ? bc : '';
+  if (p.mv !== undefined) $('mv').value = p.mv;
+  if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
+  if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
+  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
+  [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
+  recalc();
+});
   presetListEl.appendChild(btn);
 });
 // manually editing weight/BC means the preset no longer necessarily applies — drop the highlight
 ['weight','bc'].forEach(id => $(id).addEventListener('input', () => {
+  activePreset = null;
   [...presetListEl.children].forEach(b => b.classList.remove('active'));
 }));
 
