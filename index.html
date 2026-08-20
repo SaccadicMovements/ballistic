@@ -31,6 +31,8 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.06);
     --up-color: #2a78d6;
     --wind-color: #d95926;
+    --highlight-bg: #eaf2fc;
+    --highlight-glow: rbga(42, 120, 214, 0.28);
   }
   [data-theme="dark"] {
     --bg: #1b1a17;
@@ -47,6 +49,8 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.3);
     --up-color: #3987e5;
     --wind-color: #e5773f;
+    --highlight-bg: #1c2a3a;
+    --highlight-glow: rgba(57, 135, 229, 0.35);
   }
   * { box-sizing: border-box; }
   body {
@@ -97,6 +101,22 @@
     font-family: inherit;
   }
   .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .field.field-highlight label {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+}
+.field.field-highlight input {
+  font-weight: 700;
+  font-size: 17px;
+  background: var(--highlight-bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--highlight-glow);
+}
+.field.field-highlight input:focus { outline: none; }
+  .field input.highlight { font-weight: 700; 
+                          border: 2px solid var(--accent); 
+                         }
   .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
   .seg {
     display: flex; border: 1px solid var(--input-border); border-radius: 6px; overflow: hidden;
@@ -226,9 +246,9 @@
             <input type="number" inputmode="decimal" id="zeroRange" value="100" step="1" min="1">
           </div>
         </div>
-        <div class="field">
+        <div class="field field-highlight">
           <label for="targetRange">Target distance (yd)</label>
-          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1">
+          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1" class="highlight">
         </div>
       </div>
 
