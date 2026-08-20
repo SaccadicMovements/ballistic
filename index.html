@@ -471,11 +471,11 @@ function milFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (3.6 * 
 const $ = (id) => document.getElementById(id);
 let Model = 'G1';
 
-document.getElementById('Seg').addEventListener('click', (e) => {
+document.getElementById('dragSeg').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
   Model = btn.dataset.val;
-  [...document.getElementById('Seg').children].forEach(b => b.classList.toggle('active', b === btn));
+  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b === btn));
   recalc();
 });
 
