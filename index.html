@@ -264,7 +264,7 @@
         </div>
         <div class="field field-highlight">
           <label for="targetRange">Target distance (yd)</label>
-          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1">
+          <input type="number" inputmode="decimal" id="targetRange" value="600" step="1" min="1">
         </div>
       </div>
 
@@ -560,9 +560,9 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1, .243 G7' },
-  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1, .151 G7' },
-  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bcG1: 0.315, bcG7: null, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .315 G1 (no verified G7)' },
+  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'G1/G7 Toggle' },
+  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'G1/G7 Toggle' },
+  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bcG1: 0.315, bcG7: 0.165, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'G1/G7 Toggle' },
   { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1 (no verified G7)' },
 ];
 function bcForModel(preset, model) {
