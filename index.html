@@ -101,23 +101,21 @@
     font-family: inherit;
   }
   .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-  .field.field-highlight label {
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 13px;
-}
-.field.field-highlight input {
-  font-weight: 700;
-  font-size: 17px;
-  background: var(--highlight-bg);
-  border: 2px solid var(--accent);
-  box-shadow: 0 0 0 4px var(--highlight-glow);
-}
-.field.field-highlight input:focus { outline: none; }
-  .field input.highlight { font-weight: 700; 
-                          border: 2px solid var(--accent); 
-                         }
   .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+  .field.field-highlight label {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .field.field-highlight input {
+    font-weight: 700;
+    font-size: 17px;
+    background: var(--highlight-bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--highlight-glow);
+  }
+  .field.field-highlight input:focus { outline: none; }
   .seg {
     display: flex; border: 1px solid var(--input-border); border-radius: 6px; overflow: hidden;
   }
@@ -187,6 +185,24 @@
   .preset-btn.active { border-color: var(--accent); background: var(--panel); box-shadow: 0 0 0 1px var(--accent) inset; }
   .preset-btn .pname { font-size: 13px; font-weight: 650; }
   .preset-btn .pmeta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+
+  .btn-primary {
+    width: 100%; margin-top: 2px; padding: 9px 0; border-radius: 7px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; font-size: 13.5px; font-weight: 650; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary:hover { opacity: 0.92; }
+  .btn-secondary {
+    width: 100%; margin-top: 10px; padding: 7px 0; border-radius: 7px; border: 1px solid var(--input-border);
+    background: var(--input-bg); color: var(--text-primary); font-size: 12.5px; cursor: pointer; font-family: inherit;
+  }
+  .true-result {
+    margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--card-bg);
+    border: 1px solid var(--border); font-size: 13px; line-height: 1.5;
+  }
+  .true-result .bcval { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .true-result.warn { background: #fbe6e2; border-color: #e8998a; color: #8a2f1e; }
+  [data-theme="dark"] .true-result.warn { background: #3a201b; border-color: #6b3225; color: #f0ada0; }
 </style>
 </head>
 <body>
@@ -212,12 +228,12 @@
         <div class="section-title">Projectile &amp; Load</div>
         <div class="field">
           <label for="weight">Bullet weight (grains)</label>
-          <input type="number" inputmode="decimal" id="weight" value="" step="0.1" min="1">
+          <input type="number" inputmode="decimal" id="weight" value="175" step="0.1" min="1">
         </div>
         <div class="field-row">
           <div class="field">
             <label for="bc">Ballistic coefficient</label>
-            <input type="number" inputmode="decimal" id="bc" value="" step="0.001" min="0.01">
+            <input type="number" inputmode="decimal" id="bc" value="0.505" step="0.001" min="0.01">
           </div>
           <div class="field">
             <label>Drag model</label>
@@ -231,7 +247,7 @@
           <label for="mv">Muzzle velocity (fps)</label>
           <input type="number" inputmode="decimal" id="mv" value="" step="1" min="100">
         </div>
-        <div class="note">Use the BC published by the bullet manufacturer for the matching  model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
+        <div class="note">Use the BC published by the bullet manufacturer for the matching drag model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
       </div>
 
       <div class="panel">
@@ -248,7 +264,7 @@
         </div>
         <div class="field field-highlight">
           <label for="targetRange">Target distance (yd)</label>
-          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1" class="highlight">
+          <input type="number" inputmode="decimal" id="targetRange" value="500" step="1" min="1">
         </div>
       </div>
 
@@ -257,7 +273,7 @@
         <div class="field-row">
           <div class="field">
             <label for="temp">Temperature (&deg;F)</label>
-            <input type="number" inputmode="decimal" id="temp" value="70" step="1">
+            <input type="number" inputmode="decimal" id="temp" value="59" step="1">
           </div>
           <div class="field">
             <label for="humidity">Humidity (%)</label>
@@ -292,6 +308,33 @@
           <label for="shotAngle">Shot angle / incline (&deg;, uphill +)</label>
           <input type="number" inputmode="decimal" id="shotAngle" value="0" step="1" min="-89" max="89">
         </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">BC Truing (optional)</div>
+        <div class="note" style="margin-top: -4px; margin-bottom: 10px;">
+          Shot at a known distance and want to back-solve a BC that actually matches what you saw on target? Enter what you observed below — it solves for the BC (using your current weight, drag model, MV, zero, sight height &amp; atmosphere above) that reproduces that drop.
+        </div>
+        <div class="field">
+          <label for="trueDist">Distance shot at (yd)</label>
+          <input type="number" inputmode="decimal" id="trueDist" value="" step="1" min="1" placeholder="e.g. 500">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="trueVal">Observed miss</label>
+            <input type="number" inputmode="decimal" id="trueVal" value="" step="0.01" min="0" placeholder="e.g. 4.5">
+          </div>
+          <div class="field">
+            <label for="trueUnit">Unit</label>
+            <select id="trueUnit">
+              <option value="in">inches low</option>
+              <option value="moa">MOA dialed up</option>
+              <option value="mil">Mil dialed up</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" id="trueSolveBtn">Solve for BC</button>
+        <div id="trueResult"></div>
       </div>
 
     </div>
@@ -346,7 +389,7 @@
         </div>
 
         <div class="footer-note">
-          Point-mass model (standard G1/G7  tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
+          Point-mass model (standard G1/G7 drag tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
         </div>
       </div>
     </div>
@@ -406,11 +449,11 @@ function densityRatio(altitudeFt, tempF, pressureInHg, humidityPct) {
   const pEff = p - 0.3783 * pv;
   return (pEff / Pstd) * (Tstd / Tr);
 }
-function Decel(vFps, mach, bc, Model, rhoRatio) {
-  const table = Model === 'G1' ? G1 : G7;
+function dragDecel(vFps, mach, bc, dragModel, rhoRatio) {
+  const table = dragModel === 'G1' ? G1 : G7;
   return K_CONST * rhoRatio * interpCd(mach, table) * vFps * vFps / bc;
 }
-function simulate(mv, bc, Model, angleRad, tempF, altitudeFt, pressureInHg, humidityPct, windMph, windDeg, maxRangeFt, dt) {
+function simulate(mv, bc, dragModel, angleRad, tempF, altitudeFt, pressureInHg, humidityPct, windMph, windDeg, maxRangeFt, dt) {
   dt = dt || 0.0005;
   const rhoRatio = densityRatio(altitudeFt, tempF, pressureInHg, humidityPct);
   const aSound = speedOfSound(tempF);
@@ -426,7 +469,7 @@ function simulate(mv, bc, Model, angleRad, tempF, altitudeFt, pressureInHg, humi
     const relVx = vx - windx, relVz = vz - windz;
     const speed = Math.sqrt(relVx*relVx + vy*vy + relVz*relVz);
     const mach = speed / aSound;
-    const dec = Decel(speed, mach, bc, Model, rhoRatio);
+    const dec = dragDecel(speed, mach, bc, dragModel, rhoRatio);
     const ax = -dec * (relVx / speed), ay = -dec * (vy / speed) - g, az = -dec * (relVz / speed);
     vx += ax*dt; vy += ay*dt; vz += az*dt;
     x += vx*dt; y += vy*dt; z += vz*dt; t += dt;
@@ -451,14 +494,14 @@ function perpDropAtLosRange(traj, sFt, sightHeightFt, shotAngleDeg) {
   if (traj.length) { const last = traj[traj.length-1]; return {perp: -last.x*st + (last.y-sightHeightFt)*ct, pt: last}; }
   return {perp: 0, pt: {x:0,y:0,z:0,vx:0,vy:0,vz:0,t:0,speed:0}};
 }
-function solveZeroAngle(mv, bc, Model, zeroLosFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
+function solveZeroAngle(mv, bc, dragModel, zeroLosFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
   shotAngleDeg = shotAngleDeg || 0;
   const theta = shotAngleDeg * Math.PI / 180;
   const maxX = zeroLosFt + 5;
   let lo = -0.03, hi = 0.03;
   for (let i = 0; i < 60; i++) {
     const mid = (lo+hi)/2;
-    const traj = simulate(mv, bc, Model, mid+theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxX);
+    const traj = simulate(mv, bc, dragModel, mid+theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxX);
     const {perp} = perpDropAtLosRange(traj, zeroLosFt, sightHeightFt, shotAngleDeg);
     if (perp < 0) lo = mid; else hi = mid;
   }
@@ -467,9 +510,35 @@ function solveZeroAngle(mv, bc, Model, zeroLosFt, sightHeightFt, tempF, altitude
 function moaFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (1.047 * rangeYd/100) : 0; }
 function milFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (3.6 * rangeYd/100) : 0; }
 
+// Back-solve the BC that makes the model's drop at distFt match an observed
+// targetDropIn (same sign convention as recalc's dropIn: negative = low),
+// holding weight/MV/zero/sight-height/atmosphere/drag-model fixed. Bisects
+// over BC in [0.02, 1.5]; returns null if the observed drop isn't reachable
+// by any BC in that range (bad inputs, or MV/zero far off).
+function solveBcForDrop(mv, dragModel, targetDropIn, distFt, zeroFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
+  const theta = shotAngleDeg * Math.PI / 180;
+  function computeDropIn(bc) {
+    const depAngle = solveZeroAngle(mv, bc, dragModel, zeroFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg);
+    const maxSimFt = Math.max(distFt, zeroFt) + 60;
+    const traj = simulate(mv, bc, dragModel, depAngle + theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxSimFt);
+    const {perp} = perpDropAtLosRange(traj, distFt, sightHeightFt, shotAngleDeg);
+    return perp * 12.0;
+  }
+  let lo = 0.02, hi = 1.5;
+  const fLo = computeDropIn(lo) - targetDropIn;
+  const fHi = computeDropIn(hi) - targetDropIn;
+  if ((fLo > 0) === (fHi > 0)) return null; // no sign change in bracket -> not solvable here
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    const f = computeDropIn(mid) - targetDropIn;
+    if ((f > 0) === (fLo > 0)) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
 // ===== UI wiring =====
 const $ = (id) => document.getElementById(id);
-let Model = 'G1';
+let dragModel = 'G1';
 
 document.getElementById('dragSeg').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
@@ -491,9 +560,9 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'G1/G7 toggle' },
-  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'G1/G7 toggle' },
-  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bcG1: 0.315, bcG7: 0.165, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'G1/G7 toggle' },
+  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1, .243 G7' },
+  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1, .151 G7' },
+  { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bcG1: 0.315, bcG7: null, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .315 G1 (no verified G7)' },
   { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1 (no verified G7)' },
 ];
 function bcForModel(preset, model) {
@@ -506,26 +575,88 @@ PRESETS.forEach((p, i) => {
   btn.className = 'preset-btn';
   btn.dataset.idx = i;
   btn.innerHTML = '<div class="pname">' + p.name + '</div><div class="pmeta">' + p.meta + '</div>';
- btn.addEventListener('click', () => {
-  activePreset = p;
-  $('weight').value = p.weight;
-  dragModel = p.drag;
-  const bc = bcForModel(p, dragModel);
-  $('bc').value = (bc !== null && bc !== undefined) ? bc : '';
-  if (p.mv !== undefined) $('mv').value = p.mv;
-  if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
-  if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
-  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
-  [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
-  recalc();
-});
+  btn.addEventListener('click', () => {
+    activePreset = p;
+    $('weight').value = p.weight;
+    dragModel = p.drag;
+    const bc = bcForModel(p, dragModel);
+    $('bc').value = (bc !== null && bc !== undefined) ? bc : '';
+    if (p.mv !== undefined) $('mv').value = p.mv;
+    if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
+    if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
+    [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
+    [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
+    recalc();
+  });
   presetListEl.appendChild(btn);
 });
 // manually editing weight/BC means the preset no longer necessarily applies — drop the highlight
+// and stop the G1/G7 toggle from auto-swapping BC based on a preset that's no longer selected
 ['weight','bc'].forEach(id => $(id).addEventListener('input', () => {
   activePreset = null;
   [...presetListEl.children].forEach(b => b.classList.remove('active'));
 }));
+
+// ===== BC truing =====
+$('trueSolveBtn').addEventListener('click', () => {
+  const resultEl = $('trueResult');
+  resultEl.innerHTML = '';
+
+  const mv = parseFloat($('mv').value);
+  const sightHeightIn = parseFloat($('sightHeight').value);
+  const zeroYd = parseFloat($('zeroRange').value);
+  const tempF = parseFloat($('temp').value);
+  const humidity = parseFloat($('humidity').value) || 0;
+  const altitude = parseFloat($('altitude').value) || 0;
+  const pressureRaw = $('pressure').value;
+  const pressure = pressureRaw === '' ? null : parseFloat(pressureRaw);
+  const shotAngle = parseFloat($('shotAngle').value) || 0;
+
+  const distYd = parseFloat($('trueDist').value);
+  const rawVal = parseFloat($('trueVal').value);
+  const unit = $('trueUnit').value;
+
+  const problems = [];
+  if (!(mv > 0)) problems.push('Enter a valid muzzle velocity above first.');
+  if (!(sightHeightIn >= 0)) problems.push('Sight height must be zero or positive.');
+  if (!(zeroYd > 0)) problems.push('Zero range must be a positive number.');
+  if (!(distYd > 0)) problems.push('Enter the distance you shot at.');
+  if (!(rawVal >= 0)) problems.push('Enter the observed miss amount (0 or positive).');
+  if (distYd > 0 && zeroYd > 0 && Math.abs(distYd - zeroYd) < 1) problems.push('Pick a distance meaningfully different from your zero range — drop is ~0 at the zero by definition, so it can’t distinguish BCs there.');
+
+  if (problems.length) {
+    resultEl.innerHTML = '<div class="true-result warn">' + problems.join('<br>') + '</div>';
+    return;
+  }
+
+  const sightHeightFt = sightHeightIn / 12.0;
+  const zeroFt = zeroYd * 3.0;
+  const distFt = distYd * 3.0;
+
+  let targetDropIn;
+  if (unit === 'in') targetDropIn = -rawVal;
+  else if (unit === 'moa') targetDropIn = -rawVal * (1.047 * distYd / 100);
+  else targetDropIn = -rawVal * (3.6 * distYd / 100);
+
+  const solved = solveBcForDrop(mv, dragModel, targetDropIn, distFt, zeroFt, sightHeightFt, tempF, altitude, pressure, humidity, shotAngle);
+
+  if (solved === null) {
+    resultEl.innerHTML = '<div class="true-result warn">No BC between 0.02 and 1.5 reproduces that drop with your current weight, MV &amp; zero. Double-check the distance, the observed miss, and your muzzle velocity.</div>';
+    return;
+  }
+
+  resultEl.innerHTML =
+    '<div>Solved BC (' + dragModel + '): <span class="bcval">' + solved.toFixed(3) + '</span></div>' +
+    '<div class="hint" style="margin-top: 4px;">This is the BC that makes the model match your observed ' + distYd + ' yd drop, given your current weight, MV, zero &amp; conditions. If any of those are off, this BC absorbs that error too — it’s a trued number for this specific setup, not necessarily the bullet’s "true" BC.</div>' +
+    '<button class="btn-secondary" id="trueApplyBtn">Use this BC</button>';
+
+  $('trueApplyBtn').addEventListener('click', () => {
+    $('bc').value = solved.toFixed(3);
+    activePreset = null;
+    [...presetListEl.children].forEach(b => b.classList.remove('active'));
+    recalc();
+  });
+});
 
 const themeToggle = $('themeToggle');
 function applyTheme(t) {
