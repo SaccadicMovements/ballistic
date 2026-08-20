@@ -222,8 +222,8 @@
           <div class="field">
             <label>Drag model</label>
             <div class="seg" id="dragSeg">
-              <button data-val="G1">G1</button>
-              <button data-val="G7" class="active">G7</button>
+              <button data-val="G1" class="active">G1</button>
+              <button data-val="G7">G7</button>
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@
           <label for="mv">Muzzle velocity (fps)</label>
           <input type="number" inputmode="decimal" id="mv" value="" step="1" min="100">
         </div>
-        <div class="note">Use the BC published by the bullet manufacturer for the matching drag model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
+        <div class="note">Use the BC published by the bullet manufacturer for the matching  model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
       </div>
 
       <div class="panel">
@@ -346,7 +346,7 @@
         </div>
 
         <div class="footer-note">
-          Point-mass model (standard G1/G7 drag tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
+          Point-mass model (standard G1/G7  tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
         </div>
       </div>
     </div>
@@ -406,11 +406,11 @@ function densityRatio(altitudeFt, tempF, pressureInHg, humidityPct) {
   const pEff = p - 0.3783 * pv;
   return (pEff / Pstd) * (Tstd / Tr);
 }
-function dragDecel(vFps, mach, bc, dragModel, rhoRatio) {
-  const table = dragModel === 'G1' ? G1 : G7;
+function Decel(vFps, mach, bc, Model, rhoRatio) {
+  const table = Model === 'G1' ? G1 : G7;
   return K_CONST * rhoRatio * interpCd(mach, table) * vFps * vFps / bc;
 }
-function simulate(mv, bc, dragModel, angleRad, tempF, altitudeFt, pressureInHg, humidityPct, windMph, windDeg, maxRangeFt, dt) {
+function simulate(mv, bc, Model, angleRad, tempF, altitudeFt, pressureInHg, humidityPct, windMph, windDeg, maxRangeFt, dt) {
   dt = dt || 0.0005;
   const rhoRatio = densityRatio(altitudeFt, tempF, pressureInHg, humidityPct);
   const aSound = speedOfSound(tempF);
@@ -426,7 +426,7 @@ function simulate(mv, bc, dragModel, angleRad, tempF, altitudeFt, pressureInHg, 
     const relVx = vx - windx, relVz = vz - windz;
     const speed = Math.sqrt(relVx*relVx + vy*vy + relVz*relVz);
     const mach = speed / aSound;
-    const dec = dragDecel(speed, mach, bc, dragModel, rhoRatio);
+    const dec = Decel(speed, mach, bc, Model, rhoRatio);
     const ax = -dec * (relVx / speed), ay = -dec * (vy / speed) - g, az = -dec * (relVz / speed);
     vx += ax*dt; vy += ay*dt; vz += az*dt;
     x += vx*dt; y += vy*dt; z += vz*dt; t += dt;
@@ -451,14 +451,14 @@ function perpDropAtLosRange(traj, sFt, sightHeightFt, shotAngleDeg) {
   if (traj.length) { const last = traj[traj.length-1]; return {perp: -last.x*st + (last.y-sightHeightFt)*ct, pt: last}; }
   return {perp: 0, pt: {x:0,y:0,z:0,vx:0,vy:0,vz:0,t:0,speed:0}};
 }
-function solveZeroAngle(mv, bc, dragModel, zeroLosFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
+function solveZeroAngle(mv, bc, Model, zeroLosFt, sightHeightFt, tempF, altitudeFt, pressureInHg, humidityPct, shotAngleDeg) {
   shotAngleDeg = shotAngleDeg || 0;
   const theta = shotAngleDeg * Math.PI / 180;
   const maxX = zeroLosFt + 5;
   let lo = -0.03, hi = 0.03;
   for (let i = 0; i < 60; i++) {
     const mid = (lo+hi)/2;
-    const traj = simulate(mv, bc, dragModel, mid+theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxX);
+    const traj = simulate(mv, bc, Model, mid+theta, tempF, altitudeFt, pressureInHg, humidityPct, 0, 0, maxX);
     const {perp} = perpDropAtLosRange(traj, zeroLosFt, sightHeightFt, shotAngleDeg);
     if (perp < 0) lo = mid; else hi = mid;
   }
@@ -469,20 +469,20 @@ function milFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (3.6 * 
 
 // ===== UI wiring =====
 const $ = (id) => document.getElementById(id);
-let dragModel = 'G1';
+let Model = 'G1';
 
-document.getElementById('dragSeg').addEventListener('click', (e) => {
+document.getElementById('Seg').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
-  dragModel = btn.dataset.val;
-  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b === btn));
+  Model = btn.dataset.val;
+  [...document.getElementById('Seg').children].forEach(b => b.classList.toggle('active', b === btn));
   recalc();
 });
 
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bc: 0.505, drag: 'G1', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1' },
-  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bc: 0.323, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1' },
+  { name: '.308 Win — 175gr Sierra MatchKing', weight: 175, bc: 0.505, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'BC .505 G1' },
+  { name: '.223 Rem — 60gr Sierra Tipped MatchKing', weight: 60, bc: 0.323, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .323 G1' },
   { name: '.223 Rem — 69gr Hornady AeroMatch', weight: 69, bc: 0.315, drag: 'G1', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'BC .315 G1' },
   { name: '.22 LR — CCI Standard Velocity 40gr', weight: 40, bc: 0.120, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1' },
 ];
