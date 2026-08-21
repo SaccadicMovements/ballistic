@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ballistics Calculator</title>
-
 <!-- Home Screen web app support (iOS Safari: Share -> Add to Home Screen) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -72,7 +71,6 @@
     border-radius: 7px; padding: 6px 11px; font-size: 12.5px; cursor: pointer; white-space: nowrap;
   }
   .theme-toggle:hover { color: var(--text-primary); }
-
   .layout { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
   @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } }
   /* Grid items default to a content-based min-width, which lets a wide child
@@ -80,7 +78,6 @@
      page -- wider than the viewport on mobile. min-width:0 lets them shrink
      and rely on their own internal scrolling instead. */
   .col-inputs, .col-results { min-width: 0; }
-
   .panel {
     background: var(--panel); border: 1px solid var(--border); border-radius: 11px;
     padding: 16px 16px 18px; box-shadow: var(--shadow);
@@ -102,7 +99,6 @@
   }
   .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
   .field .hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-
   .field.field-highlight label {
     color: var(--accent);
     font-weight: 700;
@@ -125,7 +121,6 @@
   }
   .seg button:last-child { border-right: none; }
   .seg button.active { background: var(--accent); color: #fff; }
-
   .results-top { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
   @media (max-width: 640px) { .results-top { grid-template-columns: 1fr; } }
   .result-card {
@@ -137,7 +132,6 @@
   .result-card .sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
   .result-card.elev .big { color: var(--up-color); }
   .result-card.wind .big { color: var(--wind-color); }
-
   .stat-strip {
     display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px;
   }
@@ -145,7 +139,6 @@
   .stat-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; }
   .stat-box .k { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
   .stat-box .v { font-size: 15px; font-weight: 650; margin-top: 2px; }
-
   svg { display: block; width: 100%; height: auto; }
   .chart-wrap { margin-bottom: 18px; }
   #dropChart { aspect-ratio: 900 / 220; }
@@ -155,7 +148,6 @@
   .zero-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3,3; }
   .marker { fill: var(--up-color); }
   .marker-target { fill: var(--accent-2); }
-
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
   th:first-child, td:first-child { text-align: left; }
@@ -165,27 +157,14 @@
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
   .table-scroll-hint { display: none; font-size: 11px; color: var(--text-muted); margin: -4px 0 8px; }
   @media (max-width: 640px) { .table-scroll-hint { display: block; } }
-
   .error-box {
     background: #fbe6e2; border: 1px solid #e8998a; color: #8a2f1e; border-radius: 8px;
     padding: 10px 12px; font-size: 13px; margin-bottom: 14px;
   }
   [data-theme="dark"] .error-box { background: #3a201b; border-color: #6b3225; color: #f0ada0; }
-
   .note { font-size: 11.5px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; }
   .footer-note { font-size: 11.5px; color: var(--text-muted); margin-top: 18px; line-height: 1.6; }
-
-  .preset-list { display: flex; flex-direction: column; gap: 8px; }
-  .preset-btn {
-    display: block; width: 100%; text-align: left; cursor: pointer;
-    background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
-    padding: 9px 11px; color: var(--text-primary); font-family: inherit;
-  }
-  .preset-btn:hover { border-color: var(--accent); }
-  .preset-btn.active { border-color: var(--accent); background: var(--panel); box-shadow: 0 0 0 1px var(--accent) inset; }
-  .preset-btn .pname { font-size: 13px; font-weight: 650; }
-  .preset-btn .pmeta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
-
+  .preset-meta { font-size: 11.5px; color: var(--text-secondary); margin: -3px 0 8px; min-height: 14px; }
   .btn-primary {
     width: 100%; margin-top: 2px; padding: 9px 0; border-radius: 7px; border: 1px solid var(--accent);
     background: var(--accent); color: #fff; font-size: 13.5px; font-weight: 650; cursor: pointer;
@@ -214,16 +193,18 @@
     </div>
     <button class="theme-toggle" id="themeToggle">Dark mode</button>
   </header>
-
   <div class="layout">
     <div class="col-inputs">
-
       <div class="panel">
         <div class="section-title">Your Loads</div>
-        <div class="preset-list" id="presetList"></div>
-        <div class="note">Click a preset to load its weight &amp; BC. Everything else (velocity, zero, conditions) stays as you've set it.</div>
+        <div class="field" style="margin-bottom: 6px;">
+          <select id="presetSelect">
+            <option value="">&mdash; select a load &mdash;</option>
+          </select>
+        </div>
+        <div class="preset-meta" id="presetMeta"></div>
+        <div class="note">Pick a load to fill in weight &amp; BC. Everything else (velocity, zero, conditions) stays as you've set it.</div>
       </div>
-
       <div class="panel">
         <div class="section-title">Projectile &amp; Load</div>
         <div class="field">
@@ -249,7 +230,6 @@
         </div>
         <div class="note">Use the BC published by the bullet manufacturer for the matching drag model. If your bullet has velocity-banded BCs, pick the band closest to your muzzle velocity.</div>
       </div>
-
       <div class="panel">
         <div class="section-title">Sight &amp; Zero</div>
         <div class="field-row">
@@ -267,7 +247,6 @@
           <input type="number" inputmode="decimal" id="targetRange" value="600" step="1" min="1">
         </div>
       </div>
-
       <div class="panel">
         <div class="section-title">Atmosphere</div>
         <div class="field-row">
@@ -290,7 +269,6 @@
           <input type="number" inputmode="decimal" id="pressure" value="" step="0.01" placeholder="leave blank to estimate from altitude">
         </div>
       </div>
-
       <div class="panel">
         <div class="section-title">Wind &amp; Shot Angle</div>
         <div class="field-row">
@@ -309,7 +287,6 @@
           <input type="number" inputmode="decimal" id="shotAngle" value="0" step="1" min="-89" max="89">
         </div>
       </div>
-
       <div class="panel">
         <div class="section-title">BC Truing (optional)</div>
         <div class="note" style="margin-top: -4px; margin-bottom: 10px;">
@@ -336,12 +313,9 @@
         <button class="btn-primary" id="trueSolveBtn">Solve for BC</button>
         <div id="trueResult"></div>
       </div>
-
     </div>
-
     <div class="col-results">
       <div id="errorBox"></div>
-
       <div class="panel">
         <div class="results-top">
           <div class="result-card elev">
@@ -355,18 +329,15 @@
             <div class="sub" id="windSub"></div>
           </div>
         </div>
-
         <div class="stat-strip">
           <div class="stat-box"><div class="k">Velocity at target</div><div class="v" id="statVel">&ndash;</div></div>
           <div class="stat-box"><div class="k">Energy at target</div><div class="v" id="statEnergy">&ndash;</div></div>
           <div class="stat-box"><div class="k">Time of flight</div><div class="v" id="statTof">&ndash;</div></div>
           <div class="stat-box"><div class="k">Mach at target</div><div class="v" id="statMach">&ndash;</div></div>
         </div>
-
         <div class="chart-wrap">
           <svg id="dropChart" width="100%" height="220" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
-
         <div class="table-scroll-hint">Swipe the table sideways to see wind, velocity, energy &amp; time columns &rarr;</div>
         <div class="table-scroll">
           <table id="trajTable">
@@ -387,7 +358,6 @@
             <tbody id="trajBody"></tbody>
           </table>
         </div>
-
         <div class="footer-note">
           Point-mass model (standard G1/G7 drag tables), numerically integrated. MOA/Mil corrections are measured perpendicular to the line of sight, referenced to your zero. Positive elevation = dial up. Verify any come-ups against a real chronograph/drop check before relying on them at distance &mdash; atmospheric conditions, actual muzzle velocity, and BC all shift results.
         </div>
@@ -395,7 +365,6 @@
     </div>
   </div>
 </div>
-
 <script>
 // ===== Ballistics engine (validated point-mass model) =====
 const G1 = [
@@ -427,7 +396,6 @@ const G7 = [
 const DENSITY_SL = 0.0023769;
 const K_SHAPE = 0.5 * (Math.PI / 4032000.0) * (7000.0 * 32.174);
 const K_CONST = K_SHAPE * DENSITY_SL;
-
 function interpCd(mach, table) {
   if (mach <= table[0][0]) return table[0][1];
   if (mach >= table[table.length - 1][0]) return table[table.length - 1][1];
@@ -509,7 +477,6 @@ function solveZeroAngle(mv, bc, dragModel, zeroLosFt, sightHeightFt, tempF, alti
 }
 function moaFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (1.047 * rangeYd/100) : 0; }
 function milFromInches(dropIn, rangeYd) { return rangeYd > 0 ? -dropIn / (3.6 * rangeYd/100) : 0; }
-
 // Back-solve the BC that makes the model's drop at distFt match an observed
 // targetDropIn (same sign convention as recalc's dropIn: negative = low),
 // holding weight/MV/zero/sight-height/atmosphere/drag-model fixed. Bisects
@@ -535,11 +502,9 @@ function solveBcForDrop(mv, dragModel, targetDropIn, distFt, zeroFt, sightHeight
   }
   return (lo + hi) / 2;
 }
-
 // ===== UI wiring =====
 const $ = (id) => document.getElementById(id);
 let dragModel = 'G1';
-
 document.getElementById('dragSeg').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
@@ -557,53 +522,57 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
   }
   recalc();
 });
-
 // ===== Load presets =====
 const PRESETS = [
   { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
-  { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2695, sightHeight: 2.0, zeroRange: 100, meta: 'Matts Tikka T3x' },
+  { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2695, sightHeight: 2.2, zeroRange: 100, meta: 'Matts Tikka' },
   { name: '.223 Rem — 60gr STMK', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'Hawkeye' },
   { name: '.223 Rem — 69gr HAM', weight: 69, bcG1: 0.315, bcG7: 0.165, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'Hawkeye' },
-  { name: '.22 LR — CCI Standard 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'Shhhavage' },
-  { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 1030, sightHeight: 2.6, zeroRange: 50, meta: 'Hush Puppy' },
+  { name: '.22 LR — CCI Standard 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1 (no verified G7)' },
+  { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 1030, sightHeight: 2.6, zeroRange: 50, meta: 'G1/G7 Toggle' },
 ];
 function bcForModel(preset, model) {
   return model === 'G1' ? preset.bcG1 : preset.bcG7;
 }
 let activePreset = null;
-const presetListEl = $('presetList');
+const presetSelectEl = $('presetSelect');
+const presetMetaEl = $('presetMeta');
 PRESETS.forEach((p, i) => {
-  const btn = document.createElement('button');
-  btn.className = 'preset-btn';
-  btn.dataset.idx = i;
-  btn.innerHTML = '<div class="pname">' + p.name + '</div><div class="pmeta">' + p.meta + '</div>';
-  btn.addEventListener('click', () => {
-    activePreset = p;
-    $('weight').value = p.weight;
-    dragModel = p.drag;
-    const bc = bcForModel(p, dragModel);
-    $('bc').value = (bc !== null && bc !== undefined) ? bc : '';
-    if (p.mv !== undefined) $('mv').value = p.mv;
-    if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
-    if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
-    [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
-    [...presetListEl.children].forEach(b => b.classList.toggle('active', b === btn));
-    recalc();
-  });
-  presetListEl.appendChild(btn);
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = p.name;
+  presetSelectEl.appendChild(opt);
 });
-// manually editing weight/BC means the preset no longer necessarily applies — drop the highlight
+presetSelectEl.addEventListener('change', () => {
+  if (presetSelectEl.value === '') {
+    activePreset = null;
+    presetMetaEl.textContent = '';
+    return;
+  }
+  const p = PRESETS[parseInt(presetSelectEl.value, 10)];
+  activePreset = p;
+  $('weight').value = p.weight;
+  dragModel = p.drag;
+  const bc = bcForModel(p, dragModel);
+  $('bc').value = (bc !== null && bc !== undefined) ? bc : '';
+  if (p.mv !== undefined) $('mv').value = p.mv;
+  if (p.sightHeight !== undefined) $('sightHeight').value = p.sightHeight;
+  if (p.zeroRange !== undefined) $('zeroRange').value = p.zeroRange;
+  [...document.getElementById('dragSeg').children].forEach(b => b.classList.toggle('active', b.dataset.val === p.drag));
+  presetMetaEl.textContent = p.meta;
+  recalc();
+});
+// manually editing weight/BC means the preset no longer necessarily applies — drop the selection
 // and stop the G1/G7 toggle from auto-swapping BC based on a preset that's no longer selected
 ['weight','bc'].forEach(id => $(id).addEventListener('input', () => {
   activePreset = null;
-  [...presetListEl.children].forEach(b => b.classList.remove('active'));
+  presetSelectEl.value = '';
+  presetMetaEl.textContent = '';
 }));
-
 // ===== BC truing =====
 $('trueSolveBtn').addEventListener('click', () => {
   const resultEl = $('trueResult');
   resultEl.innerHTML = '';
-
   const mv = parseFloat($('mv').value);
   const sightHeightIn = parseFloat($('sightHeight').value);
   const zeroYd = parseFloat($('zeroRange').value);
@@ -613,11 +582,9 @@ $('trueSolveBtn').addEventListener('click', () => {
   const pressureRaw = $('pressure').value;
   const pressure = pressureRaw === '' ? null : parseFloat(pressureRaw);
   const shotAngle = parseFloat($('shotAngle').value) || 0;
-
   const distYd = parseFloat($('trueDist').value);
   const rawVal = parseFloat($('trueVal').value);
   const unit = $('trueUnit').value;
-
   const problems = [];
   if (!(mv > 0)) problems.push('Enter a valid muzzle velocity above first.');
   if (!(sightHeightIn >= 0)) problems.push('Sight height must be zero or positive.');
@@ -625,41 +592,34 @@ $('trueSolveBtn').addEventListener('click', () => {
   if (!(distYd > 0)) problems.push('Enter the distance you shot at.');
   if (!(rawVal >= 0)) problems.push('Enter the observed miss amount (0 or positive).');
   if (distYd > 0 && zeroYd > 0 && Math.abs(distYd - zeroYd) < 1) problems.push('Pick a distance meaningfully different from your zero range — drop is ~0 at the zero by definition, so it can’t distinguish BCs there.');
-
   if (problems.length) {
     resultEl.innerHTML = '<div class="true-result warn">' + problems.join('<br>') + '</div>';
     return;
   }
-
   const sightHeightFt = sightHeightIn / 12.0;
   const zeroFt = zeroYd * 3.0;
   const distFt = distYd * 3.0;
-
   let targetDropIn;
   if (unit === 'in') targetDropIn = -rawVal;
   else if (unit === 'moa') targetDropIn = -rawVal * (1.047 * distYd / 100);
   else targetDropIn = -rawVal * (3.6 * distYd / 100);
-
   const solved = solveBcForDrop(mv, dragModel, targetDropIn, distFt, zeroFt, sightHeightFt, tempF, altitude, pressure, humidity, shotAngle);
-
   if (solved === null) {
     resultEl.innerHTML = '<div class="true-result warn">No BC between 0.02 and 1.5 reproduces that drop with your current weight, MV &amp; zero. Double-check the distance, the observed miss, and your muzzle velocity.</div>';
     return;
   }
-
   resultEl.innerHTML =
     '<div>Solved BC (' + dragModel + '): <span class="bcval">' + solved.toFixed(3) + '</span></div>' +
     '<div class="hint" style="margin-top: 4px;">This is the BC that makes the model match your observed ' + distYd + ' yd drop, given your current weight, MV, zero &amp; conditions. If any of those are off, this BC absorbs that error too — it’s a trued number for this specific setup, not necessarily the bullet’s "true" BC.</div>' +
     '<button class="btn-secondary" id="trueApplyBtn">Use this BC</button>';
-
   $('trueApplyBtn').addEventListener('click', () => {
     $('bc').value = solved.toFixed(3);
     activePreset = null;
-    [...presetListEl.children].forEach(b => b.classList.remove('active'));
+    presetSelectEl.value = '';
+    presetMetaEl.textContent = '';
     recalc();
   });
 });
-
 const themeToggle = $('themeToggle');
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
@@ -671,19 +631,14 @@ themeToggle.addEventListener('click', () => {
   applyTheme(cur === 'dark' ? 'light' : 'dark');
   drawChart(lastTrajResult);
 });
-
 const inputIds = ['weight','bc','mv','sightHeight','zeroRange','targetRange','temp','humidity','altitude','pressure','windSpeed','windClock','shotAngle'];
 inputIds.forEach(id => $(id).addEventListener('input', debounce(recalc, 180)));
 function debounce(fn, ms) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
-
 function fmt(n, d) { return isFinite(n) ? n.toFixed(d) : '–'; }
-
 let lastTrajResult = null;
-
 function recalc() {
   const errBox = $('errorBox');
   errBox.innerHTML = '';
-
   const weight = parseFloat($('weight').value);
   const bc = parseFloat($('bc').value);
   const mv = parseFloat($('mv').value);
@@ -698,7 +653,6 @@ function recalc() {
   const windMph = parseFloat($('windSpeed').value) || 0;
   const windClock = parseFloat($('windClock').value);
   const shotAngle = parseFloat($('shotAngle').value) || 0;
-
   const problems = [];
   if (!(weight > 0)) problems.push('Bullet weight must be a positive number.');
   if (!(bc > 0)) problems.push('Ballistic coefficient must be a positive number.');
@@ -708,22 +662,18 @@ function recalc() {
   if (!(targetYd > 0)) problems.push('Target distance must be a positive number.');
   if (!(tempF > -90 && tempF < 140)) problems.push('Temperature looks out of range.');
   if (!(shotAngle > -90 && shotAngle < 90)) problems.push('Shot angle must be between -89 and 89 degrees.');
-
   if (problems.length) {
     errBox.innerHTML = '<div class="error-box">' + problems.join('<br>') + '</div>';
     return;
   }
-
   const sightHeightFt = sightHeightIn / 12.0;
   const zeroFt = zeroYd * 3.0;
   const targetFt = targetYd * 3.0;
   const windDeg = (windClock % 12) * 30;
-
   const depAngle = solveZeroAngle(mv, bc, dragModel, zeroFt, sightHeightFt, tempF, altitude, pressure, humidity, shotAngle);
   const theta = shotAngle * Math.PI / 180;
   const maxSimFt = Math.max(targetFt, zeroFt) + 60;
   const traj = simulate(mv, bc, dragModel, depAngle + theta, tempF, altitude, pressure, humidity, windMph, windDeg, maxSimFt);
-
   const {perp, pt} = perpDropAtLosRange(traj, targetFt, sightHeightFt, shotAngle);
   const dropIn = perp * 12.0;
   const windageIn = pt.z * 12.0;
@@ -731,10 +681,8 @@ function recalc() {
   const mil = milFromInches(dropIn, targetYd);
   const windMoa = Math.abs(windageIn) / (1.047 * targetYd/100);
   const windMil = Math.abs(windageIn) / (3.6 * targetYd/100);
-
   $('elevBig').innerHTML = fmt(Math.abs(moa),2) + '<span class="unit">MOA</span> &nbsp; ' + fmt(Math.abs(mil),2) + '<span class="unit">Mil</span>';
   $('elevSub').textContent = (moa >= 0 ? 'Dial UP ' : 'Dial DOWN ') + fmt(Math.abs(moa),2) + ' MOA (' + fmt(Math.abs(mil),2) + ' Mil) from your ' + zeroYd + ' yd zero.';
-
   if (windMph > 0) {
     const dir = windageIn > 0 ? 'LEFT drift → dial RIGHT' : (windageIn < 0 ? 'RIGHT drift → dial LEFT' : 'no drift');
     $('windBig').innerHTML = fmt(windMoa,2) + '<span class="unit">MOA</span> &nbsp; ' + fmt(windMil,2) + '<span class="unit">Mil</span>';
@@ -743,14 +691,12 @@ function recalc() {
     $('windBig').innerHTML = '0.00<span class="unit">MOA</span> &nbsp; 0.00<span class="unit">Mil</span>';
     $('windSub').textContent = 'No wind entered.';
   }
-
   const energyFtLb = weight * pt.speed * pt.speed / 450240;
   const aSoundAtTemp = speedOfSound(tempF);
   $('statVel').textContent = fmt(pt.speed,0) + ' fps';
   $('statEnergy').textContent = fmt(energyFtLb,0) + ' ft·lb';
   $('statTof').textContent = fmt(pt.t,3) + ' s';
   $('statMach').textContent = fmt(pt.speed/aSoundAtTemp,2);
-
   // trajectory table
   const rows = [];
   const stepYd = targetYd > 800 ? 100 : (targetYd > 300 ? 50 : 25);
@@ -759,7 +705,6 @@ function recalc() {
   stops.add(Math.round(zeroYd));
   stops.add(Math.round(targetYd));
   const sortedStops = [...stops].filter(r => r > 0).sort((a,b) => a-b);
-
   const tbody = $('trajBody');
   tbody.innerHTML = '';
   const chartPts = [];
@@ -782,11 +727,9 @@ function recalc() {
       '</td><td>' + fmt(pt2.speed,0) + '</td><td>' + fmt(en,0) + '</td><td>' + fmt(pt2.t,3) + '</td>';
     tbody.appendChild(tr);
   });
-
   lastTrajResult = {chartPts, zeroYd, targetYd};
   drawChart(lastTrajResult);
 }
-
 function drawChart(result) {
   const svg = $('dropChart');
   svg.innerHTML = '';
@@ -799,21 +742,17 @@ function drawChart(result) {
   const yMax = Math.max(0, ...chartPts.map(p => p.dIn)) + 1e-6;
   const yPad = (yMax - yMin) * 0.1 || 1;
   const yLo = yMin - yPad, yHi = yMax + yPad;
-
   const xScale = (x) => M.left + (x / xMax) * plotW;
   const yScale = (y) => M.top + (1 - (y - yLo) / (yHi - yLo)) * plotH;
-
   const ns = 'http://www.w3.org/2000/svg';
   function el(tag, attrs) {
     const e = document.createElementNS(ns, tag);
     for (const k in attrs) e.setAttribute(k, attrs[k]);
     return e;
   }
-
   // zero line (y=0)
   svg.appendChild(el('line', {x1: M.left, x2: W-M.right, y1: yScale(0), y2: yScale(0), class: 'zero-line'}));
   svg.appendChild(el('text', {x: M.left+2, y: yScale(0)-4, class: 'axis-label'})).textContent = 'LOS';
-
   // y-axis ticks
   const yTicks = 4;
   for (let i = 0; i <= yTicks; i++) {
@@ -833,18 +772,15 @@ function drawChart(result) {
     t.textContent = Math.round(val) + 'yd';
     svg.appendChild(t);
   }
-
   // drop path
   const path = chartPts.map((p,i) => (i===0?'M':'L') + xScale(p.ryd).toFixed(1) + ',' + yScale(p.dIn).toFixed(1)).join(' ');
   svg.appendChild(el('path', {d: path, class: 'drop-line'}));
-
   // markers
   const zeroPt = chartPts.reduce((a,b) => Math.abs(b.ryd-zeroYd) < Math.abs(a.ryd-zeroYd) ? b : a);
   const targetPt = chartPts.reduce((a,b) => Math.abs(b.ryd-targetYd) < Math.abs(a.ryd-targetYd) ? b : a);
   svg.appendChild(el('circle', {cx: xScale(zeroPt.ryd), cy: yScale(zeroPt.dIn), r: 4, class: 'marker'}));
   svg.appendChild(el('circle', {cx: xScale(targetPt.ryd), cy: yScale(targetPt.dIn), r: 4, class: 'marker-target'}));
 }
-
 recalc();
 </script>
 </body>
