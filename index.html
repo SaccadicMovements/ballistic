@@ -209,12 +209,12 @@
         <div class="section-title">Projectile &amp; Load</div>
         <div class="field">
           <label for="weight">Bullet weight (grains)</label>
-          <input type="number" inputmode="decimal" id="weight" value="175" step="0.1" min="1">
+          <input type="number" inputmode="decimal" id="weight" value="" step="0.1" min="1">
         </div>
         <div class="field-row">
           <div class="field">
             <label for="bc">Ballistic coefficient</label>
-            <input type="number" inputmode="decimal" id="bc" value="0.505" step="0.001" min="0.01">
+            <input type="number" inputmode="decimal" id="bc" value="" step="0.001" min="0.01">
           </div>
           <div class="field">
             <label>Drag model</label>
@@ -252,7 +252,7 @@
         <div class="field-row">
           <div class="field">
             <label for="temp">Temperature (&deg;F)</label>
-            <input type="number" inputmode="decimal" id="temp" value="59" step="1">
+            <input type="number" inputmode="decimal" id="temp" value="70" step="1">
           </div>
           <div class="field">
             <label for="humidity">Humidity (%)</label>
@@ -525,11 +525,11 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 // ===== Load presets =====
 const PRESETS = [
   { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
-  { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2695, sightHeight: 2.2, zeroRange: 100, meta: 'Matts Tikka' },
+  { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 1030, sightHeight: 2.6, zeroRange: 50, meta: 'Hush Puppy' },
+  { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2695, sightHeight: 2.2, zeroRange: 100, meta: 'Matts Tikka T3x' },
   { name: '.223 Rem — 60gr STMK', weight: 60, bcG1: 0.323, bcG7: 0.151, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'Hawkeye' },
   { name: '.223 Rem — 69gr HAM', weight: 69, bcG1: 0.315, bcG7: 0.165, drag: 'G7', mv: 2870, sightHeight: 1.75, zeroRange: 100, meta: 'Hawkeye' },
-  { name: '.22 LR — CCI Standard 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'BC .120 G1 (no verified G7)' },
-  { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 1030, sightHeight: 2.6, zeroRange: 50, meta: 'G1/G7 Toggle' },
+  { name: '.22 LR — CCI Standard 40gr', weight: 40, bcG1: 0.120, bcG7: null, drag: 'G1', mv: 1030, sightHeight: 1.5, zeroRange: 50, meta: 'Shhhavage' },
 ];
 function bcForModel(preset, model) {
   return model === 'G1' ? preset.bcG1 : preset.bcG7;
