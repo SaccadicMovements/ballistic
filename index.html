@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ballistics Calculator</title>
+  <subtitle>by Saccadic Movements</subtitle>
 <!-- Home Screen web app support (iOS Safari: Share -> Add to Home Screen) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -203,7 +204,7 @@
           </select>
         </div>
         <div class="preset-meta" id="presetMeta"></div>
-        <div class="note">Pick a load to fill in weight &amp; BC. Everything else (velocity, zero, conditions) stays as you've set it.</div>
+        <div class="note">Pick a load to fill in weight, BC, MV, sight height, &amp; zero range.</div>
       </div>
       <div class="panel">
         <div class="section-title">Projectile &amp; Load</div>
@@ -524,7 +525,7 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 });
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2672, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
+  { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
   { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 1030, sightHeight: 2.6, zeroRange: 50, meta: 'Hush Puppy' },
   { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2617, sightHeight: 2.0, zeroRange: 100, meta: 'Matts Tikka T3x' },
   { name: '6.5 CM — 147gr Suppressed', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2639, sightHeight: 2.0, zeroRange: 100, meta: 'Matts T3x with hush pipe' },
