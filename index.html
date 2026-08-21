@@ -625,7 +625,7 @@ function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   themeToggle.textContent = t === 'dark' ? 'Light mode' : 'Dark mode';
 }
-applyTheme(window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches ? 'dark' : 'light');
+applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 themeToggle.addEventListener('click', () => {
   const cur = document.documentElement.getAttribute('data-theme');
   applyTheme(cur === 'dark' ? 'light' : 'dark');
