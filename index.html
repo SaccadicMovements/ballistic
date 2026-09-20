@@ -105,14 +105,41 @@
     font-weight: 700;
     font-size: 13px;
   }
-  .field.field-highlight input {
+  .field.field-highlight input:not([type="range"]) {
     font-weight: 700;
     font-size: 17px;
     background: var(--highlight-bg);
     border: 2px solid var(--accent);
     box-shadow: 0 0 0 4px var(--highlight-glow);
   }
-  .field.field-highlight input:focus { outline: none; }
+  .field.field-highlight input:not([type="range"]):focus { outline: none; }
+  .field input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 28px; padding: 0; margin: 10px 0 2px;
+    background: transparent; border: none; box-shadow: none; display: block;
+  }
+  .field input[type="range"]::-webkit-slider-runnable-track {
+    height: 5px; border-radius: 3px; background: var(--input-border);
+  }
+  .field input[type="range"]::-moz-range-track {
+    height: 5px; border-radius: 3px; background: var(--input-border);
+  }
+  .field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 20px; height: 20px; border-radius: 50%; margin-top: -7.5px;
+    background: var(--accent); border: 2px solid var(--panel);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer;
+  }
+  .field input[type="range"]::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--panel);
+    background: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer;
+  }
+  .field input[type="range"]:focus { outline: none; }
+  .field input[type="range"]:focus::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--highlight-glow); }
+  .field input[type="range"]:focus::-moz-range-thumb { box-shadow: 0 0 0 4px var(--highlight-glow); }
+  .range-scale {
+    display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-muted);
+  }
   .seg {
     display: flex; border: 1px solid var(--input-border); border-radius: 6px; overflow: hidden;
   }
@@ -246,6 +273,8 @@
         <div class="field field-highlight">
           <label for="targetRange">Target distance (yd)</label>
           <input type="number" inputmode="decimal" id="targetRange" value="600" step="1" min="1">
+          <input type="range" id="targetRangeSlider" min="1" max="1500" step="1" value="600" aria-label="Target distance slider">
+          <div class="range-scale"><span>1</span><span>1500 yd</span></div>
         </div>
       </div>
       <div class="panel">
@@ -636,6 +665,24 @@ themeToggle.addEventListener('click', () => {
 const inputIds = ['weight','bc','mv','sightHeight','zeroRange','targetRange','temp','humidity','altitude','pressure','windSpeed','windClock','shotAngle'];
 inputIds.forEach(id => $(id).addEventListener('input', debounce(recalc, 180)));
 function debounce(fn, ms) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
+// Target distance slider <-> number field sync. The number field stays the
+// source of truth (no upper bound); the slider is a convenience and just
+// clamps its own handle if the typed value runs past the slider's max.
+const targetRangeInput = $('targetRange');
+const targetRangeSlider = $('targetRangeSlider');
+const debouncedSliderRecalc = debounce(recalc, 100);
+function syncSliderFromInput() {
+  const v = parseFloat(targetRangeInput.value);
+  if (isFinite(v)) {
+    targetRangeSlider.value = Math.min(Math.max(v, +targetRangeSlider.min), +targetRangeSlider.max);
+  }
+}
+targetRangeSlider.addEventListener('input', () => {
+  targetRangeInput.value = targetRangeSlider.value;
+  debouncedSliderRecalc();
+});
+targetRangeInput.addEventListener('input', syncSliderFromInput);
+syncSliderFromInput();
 function fmt(n, d) { return isFinite(n) ? n.toFixed(d) : '–'; }
 let lastTrajResult = null;
 function recalc() {
