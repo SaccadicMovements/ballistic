@@ -291,8 +291,8 @@
         </div>
         <div class="field">
           <label for="altitude">Altitude (ft)</label>
-          <input type="number" inputmode="decimal" id="altitude" value="662" step="10">
-          <div class="hint">Defaulted to ~662 ft, Consolidated Sportsmen of Lycoming County (Williamsport, PA). Adjust if you're shooting elsewhere.</div>
+          <input type="number" inputmode="decimal" id="altitude" value="1450" step="1" min="0">
+          <div class="hint">Defaulted to Kennerdell, PA - MKM PRS.</div>
         </div>
         <div class="field">
           <label for="pressure">Station pressure (inHg) &mdash; optional</label>
@@ -554,7 +554,7 @@ document.getElementById('dragSeg').addEventListener('click', (e) => {
 });
 // ===== Load presets =====
 const PRESETS = [
-  { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2673, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
+  { name: '.308 Win — 175gr SMK', weight: 175, bcG1: 0.505, bcG7: 0.243, drag: 'G7', mv: 2650, sightHeight: 2.2, zeroRange: 100, meta: 'Daves Howa' },
   { name: '300 BLK — 220gr SMK ', weight: 220, bcG1: 0.629, bcG7: 0.313, drag: 'G7', mv: 986, sightHeight: 2.6, zeroRange: 50, meta: 'Hush Puppy' },
   { name: '6.5 CM — 147gr ELD Match', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2617, sightHeight: 2.0, zeroRange: 100, meta: 'Matts Tikka T3x' },
   { name: '6.5 CM — 147gr Suppressed', weight: 147, bcG1: 0.697, bcG7: 0.351, drag: 'G7', mv: 2639, sightHeight: 2.0, zeroRange: 100, meta: 'Matts T3x with hush pipe' },
