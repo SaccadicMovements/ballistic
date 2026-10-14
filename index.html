@@ -750,7 +750,7 @@ function recalc() {
   $('statMach').textContent = fmt(pt.speed/aSoundAtTemp,2);
   // trajectory table
   const rows = [];
-  const stepYd = targetYd > 1000 ? 100 : (targetYd > 400 ? 50 : 25);
+  const stepYd = targetYd > 1000 ? 100 : (targetYd > 600 ? 50 : 25);
   const stops = new Set();
   for (let r = stepYd; r <= Math.max(targetYd, zeroYd); r += stepYd) stops.add(Math.round(r));
   stops.add(Math.round(zeroYd));
